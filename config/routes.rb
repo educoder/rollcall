@@ -1,4 +1,37 @@
 Rollcall::Application.routes.draw do |map|
+
+  resources :apps do
+    resources :metadata
+  end
+  
+  resources :runs do
+    resources :metadata
+    resources :users
+  end
+
+  resources :users do
+    resources :metadata
+  end
+  
+  resources :groups do
+    member do
+      put :add_member
+      put :remove_member
+    end
+    resources :memberships, :controller => 'group_memberships'
+    resources :metadata
+  end
+
+  resources :sessions do
+    collection do
+      get :validate_token
+    end
+  end
+  match '/login' => 'sessions#new'
+  match '/login.xml' => 'sessions#create'
+  match '/login/validate_token/:username/:token(.:format)' => 'sessions#validate_token',
+    :defaults => { :format => 'xml' }
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>About:</b>
+  <%= @metadata.about_id %>
+</p>
+
+<p>
+  <b>About type:</b>
+  <%= @metadata.about_type %>
+</p>
+
+<p>
+  <b>Key:</b>
+  <%= @metadata.key %>
+</p>
+
+<p>
+  <b>Value:</b>
+  <%= @metadata.value %>
+</p>
+
+
+<%= link_to 'Edit', edit_metadata_path(@metadata) %> |
+<%= link_to 'Back', metadata_path %>

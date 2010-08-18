@@ -1,0 +1,2 @@
+class GroupMembershipsController < ApplicationController
+end

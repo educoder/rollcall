@@ -1,0 +1,29 @@
+<h1>Listing metadata</h1>
+
+<table>
+  <tr>
+    <th>About</th>
+    <th>About type</th>
+    <th>Key</th>
+    <th>Value</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @metadata.each do |metadata| %>
+  <tr>
+    <td><%= metadata.about_id %></td>
+    <td><%= metadata.about_type %></td>
+    <td><%= metadata.key %></td>
+    <td><%= metadata.value %></td>
+    <td><%= link_to 'Show', metadata %></td>
+    <td><%= link_to 'Edit', edit_metadata_path(metadata) %></td>
+    <td><%= link_to 'Destroy', metadata, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Metadata', new_metadata_path %>

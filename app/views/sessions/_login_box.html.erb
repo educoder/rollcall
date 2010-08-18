@@ -1,0 +1,25 @@
+<%= form_for(@session, :html => {:id => 'login'}) do |f| %>
+  <% if @session.errors.any? %>
+    <div id="error_explanation">
+      <h2>Sorry, the system couldn't log you in:</h2>
+
+      <ul>
+      <% @session.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :username %><br />
+    <%= f.text_field :username %>
+  </div>
+  <div class="field">
+    <%= f.label :password %><br />
+    <%= f.password_field :password %>
+  </div>
+  <div class="actions">
+    <%= f.submit("Login") %>
+  </div>
+<% end %>
