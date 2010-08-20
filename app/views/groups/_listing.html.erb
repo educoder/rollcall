@@ -1,0 +1,9 @@
+<div id="<%= dom_id(group) %>" class="group listing">
+	<span class="summary"><%= group.members.count %> members</span>
+	<h3><%= group.name %></h3>
+	<ul class="groupables" style="display: none">
+		<% group.members.each do |groupable| %>
+			<%= render(:partial => 'groupable', :locals => {:groupable => groupable}) %>
+		<% end %>
+	</ul>
+</div>

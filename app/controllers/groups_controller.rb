@@ -5,6 +5,7 @@ class GroupsController < ApplicationController
   # GET /groups.xml
   def index
     @groups = Group.all
+    @groupables = Group.all + User.all
 
     respond_to do |format|
       format.html # index.html.erb

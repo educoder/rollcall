@@ -1,0 +1,100 @@
+/* http://colorschemedesigner.com/#21322w0jCw0w03V3Sj */
+
+body {
+  background-color: #890;
+  color: #340;
+  font-size: 16px;
+}
+
+a {
+  color: #902;
+  text-decoration: none;
+  font-weight: bold;
+  border-bottom: 3px dotted #902;
+}
+
+a:hover {
+  color: #b24;
+  border-bottom: 3px dotted #b24;
+}
+
+*.clickable {
+  cursor: pointer;
+}
+
+h1#nameplate {
+  color: white;
+  font-size: 36px;
+  border-bottom: 3px solid #450;
+  background-color: #ab2;
+  margin: -8px -8px 0;
+  padding: 0 8px 0 8px;
+}
+
+h1 {
+  margin-top: 8px;
+  margin-left: 18px;
+  margin-right: 18px;
+}
+
+div.list-actions {
+  float: right;
+  padding-top: 24px;
+  margin-right: 24px;
+}
+
+div.list {
+
+}
+
+div.listing {
+  background-color: #670;
+  margin-bottom: 8px;
+  padding: 6px;
+}
+
+div.listing span.summary {
+  font-size: 12px;
+  float: right;
+  padding-top: 2px;
+}
+
+div.listing:hover {
+}
+
+div.listing h3 {
+  margin: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+ul.groupables {
+  list-style: none;
+  padding-left: 18px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+ul.groupables li {
+  margin-left: 0px;
+  padding-left: 0px;
+  padding-right: 4px;
+  margin-bottom: 3px;
+  background-color: #9a5;
+}
+
+ul.groupables li span.class {
+  background-color: #340;
+  color: #bc7;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+div.sidebox {
+  border: 4px dashed #670;
+}
+
+div.sidebox ul {
+  padding-left: 4px;
+  padding-right: 4px;
+}

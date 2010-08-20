@@ -25,4 +25,8 @@ class Group < ActiveRecord::Base
     debugger
     to_xml(:methods => :members)
   end
+  
+  def to_s
+    name
+  end
 end
