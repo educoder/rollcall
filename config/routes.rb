@@ -1,6 +1,6 @@
-Rollcall::Application.routes.draw do |map|
+Rollcall::Application.routes.draw do
 
-  resources :apps do
+  resources :curnits do
     resources :metadata
   end
   
@@ -27,9 +27,9 @@ Rollcall::Application.routes.draw do |map|
       get :validate_token
     end
   end
-  match '/login' => 'sessions#new'
-  match '/login.xml' => 'sessions#create'
-  match '/login/validate_token/:username/:token(.:format)' => 'sessions#validate_token',
+  get '/login' => 'sessions#new'
+  post '/login.xml' => 'sessions#create'
+  get '/login/validate_token/:username/:token(.:format)' => 'sessions#validate_token',
     :defaults => { :format => 'xml' }
 
   # The priority is based upon order of creation:

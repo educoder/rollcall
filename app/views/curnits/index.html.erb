@@ -1,0 +1,23 @@
+<h1>Listing curnits</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @curnits.each do |curnit| %>
+  <tr>
+    <td><%= curnit.name %></td>
+    <td><%= link_to 'Show', curnit %></td>
+    <td><%= link_to 'Edit', edit_curnit_path(curnit) %></td>
+    <td><%= link_to 'Destroy', curnit, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Curnit', new_curnit_path %>

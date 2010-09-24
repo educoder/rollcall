@@ -1,6 +1,15 @@
 class SessionsController < ApplicationController
   include RestfulApiMixin
   
+  def index
+    @sessions = Session.all
+    
+    respond_to do |format|
+      format.xml { render :xml => @sessions }
+      format.json { render :json => @sessions }
+    end
+  end
+  
   # GET /sessions/new
   # GET /login
   def new
@@ -19,7 +28,8 @@ class SessionsController < ApplicationController
 
     respond_to do |format|
       if @session.save
-        format.html { redirect_to(@session, :notice => 'Session started.') }
+        flash.now[:notice] = "You have successfully logged in as #{@session.user}."
+        format.html { render :action => 'logged_in' }
         format.xml  { render :xml => @session, :status => :created }
       else
         @session.password = nil # reset the password so that it is blank in the login box

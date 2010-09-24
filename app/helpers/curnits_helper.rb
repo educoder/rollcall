@@ -1,0 +1,2 @@
+module CurnitsHelper
+end

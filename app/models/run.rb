@@ -1,12 +1,12 @@
 class Run < ActiveRecord::Base
-  belongs_to :app
+  belongs_to :curnit
   has_many :groups
   has_many :metadata, :as => :about,
     :autosave => true, :dependent => :destroy
   
   include MetadataAccessorMixin
   
-  validates_presence_of :app_id
+  validates_presence_of :curnit_id
   
   def to_s
     "#{app}: #{name}"

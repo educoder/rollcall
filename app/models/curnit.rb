@@ -1,4 +1,4 @@
-class App < ActiveRecord::Base
+class Curnit < ActiveRecord::Base
   has_many :runs
   has_many :metadata, :as => :about, 
     :autosave => true, :dependent => :destroy

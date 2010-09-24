@@ -24,8 +24,8 @@
     <%= f.text_field :display_name %>
   </div>
 	<div class="field">
-    <%= f.label :type %><br />
-    <%= f.select :type, User::KINDS %>
+    <%= f.label :kind %><br />
+    <%= f.select :kind, User::KINDS %>
   </div>
   <div class="actions">
     <%= f.submit %>

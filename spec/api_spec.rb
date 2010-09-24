@@ -1,4 +1,5 @@
 require 'spec_helper'
+
 require 'rest_client'
 require 'nokogiri'
 
@@ -78,55 +79,55 @@ describe 'Rollcall RESTful API' do
     }.should raise_exception(RestClient::Request::Unauthorized)
   end
   
-  
-  it "should create an App, Run, and Group and return the new App's, Run's, and Group's data and metadata" do    
-    app = create_test_app
     
-    app.xpath('//name').text.should_not be_blank
-    app.xpath('//metadata/creator').text.should_not be_blank
+    it "should create an Curnit, Run, and Group and return the new Curnit's, Run's, and Group's data and metadata" do    
+      curnit = create_test_curnit
+      
+      curnit.xpath('//name').text.should_not be_blank
+      curnit.xpath('//metadata/creator').text.should_not be_blank
+      
+      run = create_test_run(curnit.xpath('//id').text)
+      
+      run.xpath('//name').text.should_not be_blank
+      run.xpath('//metadata/start-time').text.should_not be_blank
+      
+      group = create_test_group(curnit.xpath('//id').text)
+      
+      group.xpath('//name').text.should_not be_blank
+      group.xpath('//metadata/nested').text.should_not be_blank
+    end
     
-    run = create_test_run(app.xpath('//id').text)
     
-    run.xpath('//name').text.should_not be_blank
-    run.xpath('//metadata/start-time').text.should_not be_blank
-    
-    group = create_test_group(app.xpath('//id').text)
-    
-    group.xpath('//name').text.should_not be_blank
-    group.xpath('//metadata/nested').text.should_not be_blank
-  end
-  
-  
-  it "should add and remove various members to/from a Group" do
-    app = create_test_app
-    run = create_test_run(app.xpath('//id').text)
-    
-    group1 = create_test_group(app.xpath('//id').text)
-    group1_id = group1.xpath('//group/id').text
-    group2 = create_test_group(app.xpath('//id').text)
-    group2_id = group2.xpath('//group/id').text
-    
-    user1 = create_test_user
-    user1_id = user1.xpath('//id').text
-    
-    user2 = create_test_user
-    user2_id = user2.xpath('//id').text
-    
-    group1 = add_item_to_group(group1, user1)
-    group1.xpath("//member/id[text()='#{user1_id}']").text.should == user1_id
-    group1 = add_item_to_group(group1, user2)
-    group1.xpath("//member/id[text()='#{user2_id}']").text.should == user2_id
-    
-    group2 = add_item_to_group(group2, user2)
-    group2.xpath("//member/id[text()='#{user2_id}']").text.should == user2_id
-    group2.xpath("//member/id[text()='#{user1_id}']").should be_empty # user1 wasn't added so shouldn't be there
-    
-    group1 = add_item_to_group(group1, group2)
-    group1.xpath("//member/id[text()='#{group2_id}']").text.should == group2_id
-    
-    group1 = remove_item_from_group(group1, user1)
-    group1.xpath("//member/id[text()='#{user1_id}']").should be_empty
-  end
+    it "should add and remove various members to/from a Group" do
+      curnit = create_test_curnit
+      run = create_test_run(curnit.xpath('//id').text)
+      
+      group1 = create_test_group(curnit.xpath('//id').text)
+      group1_id = group1.xpath('//group/id').text
+      group2 = create_test_group(curnit.xpath('//id').text)
+      group2_id = group2.xpath('//group/id').text
+      
+      user1 = create_test_user
+      user1_id = user1.xpath('//id').text
+      
+      user2 = create_test_user
+      user2_id = user2.xpath('//id').text
+      
+      group1 = add_item_to_group(group1, user1)
+      group1.xpath("//member/id[text()='#{user1_id}']").text.should == user1_id
+      group1 = add_item_to_group(group1, user2)
+      group1.xpath("//member/id[text()='#{user2_id}']").text.should == user2_id
+      
+      group2 = add_item_to_group(group2, user2)
+      group2.xpath("//member/id[text()='#{user2_id}']").text.should == user2_id
+      group2.xpath("//member/id[text()='#{user1_id}']").should be_empty # user1 wasn't added so shouldn't be there
+      
+      group1 = add_item_to_group(group1, group2)
+      group1.xpath("//member/id[text()='#{group2_id}']").text.should == group2_id
+      
+      group1 = remove_item_from_group(group1, user1)
+      group1.xpath("//member/id[text()='#{user1_id}']").should be_empty
+    end
   
   
   def create_test_user
@@ -160,11 +161,11 @@ describe 'Rollcall RESTful API' do
     return @group
   end
   
-  def create_test_run(app_id)
+  def create_test_run(curnit_id)
     xml = @client['runs.xml'].post(
       :run => {
         :name => "Test Run #{@rand}",
-        :app_id => app_id,
+        :curnit_id => curnit_id,
         :metadata => {'start-time' => Time.now}
       }
     )
@@ -173,16 +174,16 @@ describe 'Rollcall RESTful API' do
     return @run
   end
   
-  def create_test_app
-    xml = @client['apps.xml'].post(
-      :app => {
-        :name => "Test App #{@rand}",
+  def create_test_curnit
+    xml = @client['curnits.xml'].post(
+      :curnit => {
+        :name => "Test Curnit #{@rand}",
         :metadata => {'creator' => 'test'}
       }
     )
     
-    @app = Nokogiri::XML(xml)
-    return @app
+    @curnit = Nokogiri::XML(xml)
+    return @curnit
   end
   
   def add_item_to_group(group, item)

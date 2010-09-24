@@ -4,23 +4,32 @@ module MetadataAccessorMixin
       alias_method :_metadata, :metadata
       
       def to_xml(*args)
-        args[0] ||= {}
-        
-        methods = args[0][:methods]
-        methods = [methods] unless methods.is_a?(Array)
-        
-        if methods.empty? || methods == [nil]
-          args[0][:methods] = :metadata
-        elsif !methods.include?(:metadata)
-          args[0][:methods] = methods << :metadata
-        end
-        
+        add_metadata_to_serialization_options(*args)
+        super(*args)
+      end
+      
+      def as_json(*args)
+        add_metadata_to_serialization_options(*args)
         super(*args)
       end
       
       def metadata
         MetadataAccessor.new(self)
       end
+      
+      private
+        def add_metadata_to_serialization_options(*args)
+          args[0] ||= {}
+
+          methods = args[0][:methods]
+          methods = [methods] unless methods.is_a?(Array)
+
+          if methods.empty? || methods == [nil]
+            args[0][:methods] = :metadata
+          elsif !methods.include?(:metadata)
+            args[0][:methods] = methods << :metadata
+          end
+        end
     end
   end
   
@@ -36,6 +45,14 @@ module MetadataAccessorMixin
           metadata_xml.tag!(datum.key, datum.value)
         end
       end
+    end
+    
+    def as_json(opts = {})
+      json = {}
+      @about._metadata.each do |datum|
+        json[datum.key] = datum.value
+      end
+      return json
     end
     
     def replace(attrs)

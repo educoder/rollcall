@@ -14,7 +14,6 @@ class Session < ActiveRecord::Base
   end
   
   def validate_credentials
-    puts username
     user = User.find_by_username(username)
     
     if user.nil?

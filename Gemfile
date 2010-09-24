@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.0.beta4'
+gem 'rails', '3.0.0'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -18,9 +18,11 @@ gem 'builder'
 # To use debugger
 gem 'ruby-debug'
 
-group :test do
-  gem 'rspec-rails', '>= 2.0.0.beta.17'
+group :test, :development do
+  #gem 'rspec-rails', '~> 2.0.0.beta.20'
+  gem 'rspec-rails', ">= 2.0.0.beta.22"
   gem 'rest-client'
+  gem 'nokogiri'
 end
 
 # Bundle the extra gems:

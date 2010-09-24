@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class AppTest < ActiveSupport::TestCase
+class CurnitTest < ActiveSupport::TestCase
   # Replace this with your real tests.
   test "the truth" do
     assert true

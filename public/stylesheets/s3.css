@@ -4,18 +4,18 @@ body {
   background-color: #890;
   color: #340;
   font-size: 16px;
+  margin-left: 24px;
+  margin-right: 24px;
 }
 
 a {
   color: #902;
   text-decoration: none;
   font-weight: bold;
-  border-bottom: 3px dotted #902;
 }
 
 a:hover {
   color: #b24;
-  border-bottom: 3px dotted #b24;
 }
 
 *.clickable {
@@ -27,14 +27,12 @@ h1#nameplate {
   font-size: 36px;
   border-bottom: 3px solid #450;
   background-color: #ab2;
-  margin: -8px -8px 0;
+  margin: -8px -24px 0;
   padding: 0 8px 0 8px;
 }
 
 h1 {
   margin-top: 8px;
-  margin-left: 18px;
-  margin-right: 18px;
 }
 
 div.list-actions {
@@ -46,6 +44,7 @@ div.list-actions {
 div.list {
 
 }
+
 
 div.listing {
   background-color: #670;
@@ -90,6 +89,7 @@ ul.groupables li span.class {
   padding-right: 4px;
 }
 
+
 div.sidebox {
   border: 4px dashed #670;
 }
@@ -97,4 +97,51 @@ div.sidebox {
 div.sidebox ul {
   padding-left: 4px;
   padding-right: 4px;
+}
+
+
+span.action {
+  font-size: 10px;
+}
+
+
+div.field {
+  background-color: #670;
+  padding: 4px;
+  padding-right: 10px;
+}
+
+div.field label {
+  color: #BBCC77;
+  font-weight: bold;
+}
+
+
+strong.highlight {
+  background-color: #ab0;
+}
+
+/*div.field input[type=text] {
+  width: 100%;
+}*/
+
+#notice {
+  background-color: #efb;
+  color: #560;
+  font-weight: bold;
+  padding: 4px;
+  border: 3px solid #780;
+}
+
+
+*.ui-draggable {
+  cursor: move;
+}
+
+*.ui-draggable-dragging {
+  cursor: move;
+}
+
+*.dropping {
+  background-color: #770 !important;
 }
