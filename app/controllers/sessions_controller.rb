@@ -23,6 +23,7 @@ class SessionsController < ApplicationController
   
   # POST /sessions
   # POST /sessions.xml
+  # POST /sessions.json
   def create
     @session = Session.new(params[:session])
 
@@ -34,12 +35,12 @@ class SessionsController < ApplicationController
       else
         @session.password = nil # reset the password so that it is blank in the login box
         format.html { render :action => "new" }
-        format.xml do
-          if @session.errors[:username].any? || @session.errors[:password].any?
-            render :xml => @session.errors.to_xml, :status => :unauthorized
-          else
-            render :xml => @session.errors.to_xml, :status => :unprocessable_entity
-          end
+        if @session.errors[:username].any? || @session.errors[:password].any?
+          format.xml { render :xml => @session.errors.to_xml, :status => :unauthorized }
+          format.json { render :json => @session.errors.to_json, :status => :unauthorized }
+        else
+          format.xml { render :xml => @session.errors.to_xml, :status => :unprocessable_entity }
+          format.json { render :json => @session.errors.to_json, :status => :unprocessable_entity }
         end
       end
     end
