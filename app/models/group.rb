@@ -21,11 +21,6 @@ class Group < ActiveRecord::Base
     memberships.collect{|membership| membership.member}
   end
   
-  def testit
-    debugger
-    to_xml(:methods => :members)
-  end
-  
   def to_s
     name
   end
