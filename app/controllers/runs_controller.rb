@@ -2,7 +2,11 @@ class RunsController < ApplicationController
   # GET /runs
   # GET /runs.xml
   def index
-    @runs = Run.all
+    if params[:curnit_id]
+      @runs = Curnit.find(params[:curnit_id]).runs
+    else
+      @runs = Run.all
+    end
 
     respond_to do |format|
       format.html # index.html.erb
