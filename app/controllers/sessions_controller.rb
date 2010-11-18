@@ -32,9 +32,10 @@ class SessionsController < ApplicationController
         flash.now[:notice] = "You have successfully logged in as #{@session.user}."
         format.html { render :action => 'logged_in' }
         format.xml  { render :xml => @session, :status => :created }
+        format.json { render :json => @session, :status => :created }
       else
         @session.password = nil # reset the password so that it is blank in the login box
-        format.html { render :action => "new" }
+        format.html { render :action => "new", :status => :unauthorized }
         if @session.errors[:username].any? || @session.errors[:password].any?
           format.xml { render :xml => @session.errors.to_xml, :status => :unauthorized }
           format.json { render :json => @session.errors.to_json, :status => :unauthorized }
@@ -75,8 +76,10 @@ class SessionsController < ApplicationController
     
     respond_to do |format|
       if @error
+        format.json { render :json => @error.to_json, :status => @error.type }
         format.xml { render :xml => @error.to_xml, :status => @error.type }
       else
+        format.json { render :json => @session.to_json(:include => :user) }
         format.xml { render :xml => @session.to_xml(:include => :user) }
       end
     end
