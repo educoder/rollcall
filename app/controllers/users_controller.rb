@@ -3,6 +3,7 @@ class UsersController < ApplicationController
   
   # GET /users
   # GET /users.xml
+  # GET /users.json
   def index
     if params[:run_id]
       @users = User.find(:all, :include => :groups,
@@ -20,6 +21,7 @@ class UsersController < ApplicationController
 
   # GET /users/1
   # GET /users/1.xml
+  # GET /users/1.json
   def show
     @user = User.find(params[:id])
 
