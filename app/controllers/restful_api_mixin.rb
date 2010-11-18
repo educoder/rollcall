@@ -32,11 +32,11 @@ module RestfulApiMixin
         when String
           err.message @error
         when Hash
-          err.each do |key, val|
+          @error.each do |key, val|
             err.tag!(key, val)
           end
         when Array
-          err.each do |val|
+          @error.each do |val|
             err.message val
           end
         when Exception
@@ -49,7 +49,25 @@ module RestfulApiMixin
     end
     
     def to_json
-      raise NotImplementedError
+      json = {}
+      case @error
+      when String
+        json[:message] = @error
+      when Hash
+        err.each do |key, val|
+          json[key] = val
+        end
+      when Array
+        json[:message] = []
+        @error.each do |val|
+          json[:message] << val
+        end
+      when Exception
+        json[:message] = @error.message
+        json[:type] = @error.class
+      else
+        json[:message] = @error.inspect
+      end
     end
   end
 end
