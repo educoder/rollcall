@@ -2,6 +2,7 @@ Rollcall::Application.routes.draw do
 
   resources :curnits do
     resources :metadata
+    resources :runs
   end
   
   resources :runs do
