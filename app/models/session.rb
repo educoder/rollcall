@@ -28,6 +28,8 @@ class Session < ActiveRecord::Base
   end
   
   def self.generate_token
-    rand(36**36).to_s(36)
+    token = rand(36**5).to_s(36)    
+    token = ("x" * (5 - token.length) + token) if token.length < 5
+    return token
   end
 end
