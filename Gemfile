@@ -15,15 +15,13 @@ gem 'builder'
 # Deploy with Capistrano
 # gem 'capistrano'
 
-# To use debugger
-gem 'ruby-debug'
-
 group :test, :development do
   #gem 'rspec-rails', '~> 2.0.0.beta.20'
   gem 'rspec-rails', ">= 2.0.0.beta.22"
   gem 'rest-client'
   gem 'nokogiri'
   gem 'json'
+  gem 'ruby-debug'
 end
 
 # Bundle the extra gems:
