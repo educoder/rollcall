@@ -29,8 +29,8 @@ Rollcall::Application.routes.draw do
     end
   end
   get '/login' => 'sessions#new'
-  post '/login.xml' => 'sessions#create'
-  post '/login.json' => 'sessions#create'
+  post '/login.:format' => 'sessions#create', 
+    :defaults => { :format => 'xml' }
   get '/login/validate_token/:username/:token(.:format)' => 'sessions#validate_token',
     :defaults => { :format => 'xml' }
 

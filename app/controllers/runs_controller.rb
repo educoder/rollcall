@@ -1,6 +1,7 @@
 class RunsController < ApplicationController
   # GET /runs
   # GET /runs.xml
+  # GET /runs.json
   def index
     if params[:curnit_id]
       @runs = Curnit.find(params[:curnit_id]).runs
@@ -11,17 +12,20 @@ class RunsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @runs }
+      format.json  { render :json => @runs }
     end
   end
 
   # GET /runs/1
   # GET /runs/1.xml
+  # GET /runs/1.json
   def show
     @run = Run.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @run }
+      format.json  { render :json => @run }
     end
   end
 
@@ -43,6 +47,7 @@ class RunsController < ApplicationController
 
   # POST /runs
   # POST /runs.xml
+  # POST /runs.json
   def create
     @run = Run.new(params[:run])
 
@@ -50,9 +55,11 @@ class RunsController < ApplicationController
       if @run.save
         format.html { redirect_to(@run, :notice => 'Run was successfully created.') }
         format.xml  { render :xml => @run, :status => :created, :location => @run }
+        format.json  { render :json => @run, :status => :created, :location => @run }
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @run.errors, :status => :unprocessable_entity }
+        format.json  { render :json => @run.errors, :status => :unprocessable_entity }
       end
     end
   end

@@ -23,6 +23,7 @@ group :test, :development do
   gem 'rspec-rails', ">= 2.0.0.beta.22"
   gem 'rest-client'
   gem 'nokogiri'
+  gem 'json'
 end
 
 # Bundle the extra gems:

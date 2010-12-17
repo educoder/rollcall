@@ -3,6 +3,7 @@ class GroupsController < ApplicationController
   
   # GET /groups
   # GET /groups.xml
+  # GET /groups.json
   def index
     @groups = Group.all
     @groupables = Group.all + User.all
@@ -16,6 +17,7 @@ class GroupsController < ApplicationController
 
   # GET /groups/1
   # GET /groups/1.xml
+  # GET /groups/1.json
   def show
     @group = Group.find(params[:id])
 
@@ -44,6 +46,7 @@ class GroupsController < ApplicationController
 
   # POST /groups
   # POST /groups.xml
+  # POST /groups.json
   def create
     @group = Group.new(params[:group])
 
@@ -51,15 +54,18 @@ class GroupsController < ApplicationController
       if @group.save
         format.html { redirect_to(@group, :notice => 'Group was successfully created.') }
         format.xml  { render :xml => @group, :status => :created, :location => @group }
+        format.json { render :json => @group, :status => :created, :location => @group }
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @group.errors, :status => :unprocessable_entity }
+        format.json { render :json => @group.errors, :status => :unprocessable_entity }
       end
     end
   end
 
   # PUT /groups/1
   # PUT /groups/1.xml
+  # PUT /groups/1.json
   def update
     @group = Group.find(params[:id])
 
@@ -67,15 +73,18 @@ class GroupsController < ApplicationController
       if @group.update_attributes(params[:group])
         format.html { redirect_to(@group, :notice => 'Group was successfully updated.') }
         format.xml  { head :ok }
+        format.json { head :ok }
       else
         format.html { render :action => "edit" }
         format.xml  { render :xml => @group.errors, :status => :unprocessable_entity }
+        format.json { render :json => @group.errors, :status => :unprocessable_entity }
       end
     end
   end
 
   # DELETE /groups/1
   # DELETE /groups/1.xml
+  # DELETE /groups/1.json
   def destroy
     @group = Group.find(params[:id])
     @group.destroy
@@ -83,10 +92,12 @@ class GroupsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(groups_url) }
       format.xml  { head :ok }
+      format.json { head :ok }
     end
   end
   
   # PUT /groups/1/add_member.xml
+  # PUT /groups/1/add_member.json
   def add_member
     @group = Group.find(params[:id])
     
@@ -98,13 +109,16 @@ class GroupsController < ApplicationController
     respond_to do |format|
       if @group.save
         format.xml  { render :xml => @group.to_xml(:methods => :members), :status => :created, :location => @group }
+        format.json { render :json => @group.to_json(:methods => :members), :status => :created, :location => @group }
       else
         format.xml  { render :xml => @group.errors, :status => :unprocessable_entity }
+        format.json { render :json => @group.errors, :status => :unprocessable_entity }
       end
     end
   end
   
   # PUT /groups/1/remove_member.xml
+  # PUT /groups/1/remove_member.json
   def remove_member
     @group = Group.find(params[:id])
     
@@ -119,8 +133,10 @@ class GroupsController < ApplicationController
     respond_to do |format|
       if @group.save
         format.xml  { render :xml => @group.to_xml(:methods => :members), :status => :created, :location => @group }
+        format.json { render :json => @group.to_json(:methods => :members), :status => :created, :location => @group }
       else
         format.xml  { render :xml => @group.errors, :status => :unprocessable_entity }
+        format.json { render :json => @group.errors, :status => :unprocessable_entity }
       end
     end
   end
