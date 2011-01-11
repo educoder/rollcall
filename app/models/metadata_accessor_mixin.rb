@@ -72,6 +72,12 @@ module MetadataAccessorMixin
       end
     end
     
+    def each
+      @about._metadata.find(:all).each do |datum|
+        yield datum
+      end
+    end
+    
     def to_s
       HashWithIndifferentAccess.new Hash[@about._metadata.find(:all).collect{|md| [md.key, md.value]}]
     end
