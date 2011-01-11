@@ -5,7 +5,21 @@ class GroupsController < ApplicationController
   # GET /groups.xml
   # GET /groups.json
   def index
-    @groups = Group.all
+    if params[:user_id]
+      #TODO: check that this actually works!
+      @groups = Group.find(:all, :include => :memberships, 
+        :conditions => {'group_memberships' => {'member_id' => params[:user_id],  'member_type' => User.name}}
+      )
+    elsif params[:group_id]
+      #TODO: check that this actually works!
+      @groups = Group.find(:all, :include => :memberships, 
+        :conditions => {'group_memberships' => {'member_id' => params[:group_id],  'member_type' => Group.name}}
+      )
+    else
+      @groups = Group.all
+    end
+    
+    
     @groupables = Group.all + User.all
 
     respond_to do |format|
