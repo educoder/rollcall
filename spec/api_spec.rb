@@ -129,6 +129,30 @@ describe 'Rollcall RESTful API' do
       group1 = remove_item_from_group(group1, user1)
       group1.xpath("//member/id[text()='#{user1_id}']").should be_empty
     end
+    
+    it "should be able to retrieve the Groups that a groupable item belongs to" do
+      curnit = create_test_curnit
+      run = create_test_run(curnit.xpath('//id').text)
+      
+      group1 = create_test_group(curnit.xpath('//id').text)
+      group1_id = group1.xpath('//group/id').text
+      group2 = create_test_group(curnit.xpath('//id').text)
+      group2_id = group2.xpath('//group/id').text
+    
+      user = create_test_user
+      user_id = user.xpath('//id').text
+      
+      add_item_to_group(group1, user)
+      add_item_to_group(group2, user)
+      
+      xml = @client["users/#{user_id}/groups.xml"]
+      groups = parse_response(xml, 'xml')
+
+      group_ids = groups.xpath('//group').collect{|g| g['id']}
+      
+      group_ids.should include(group1_id)
+      group_ids.should include(group2_id)
+    end
   end
   
   describe 'JSON' do
@@ -320,7 +344,7 @@ describe 'Rollcall RESTful API' do
   
   def parse_response(resp, format)
     if format == 'xml'
-      Nokogiri::XML(resp)
+      Nokogiri::XML(resp.to_s)
     elsif format == 'json'
       JSON.parse!(resp)
     else
