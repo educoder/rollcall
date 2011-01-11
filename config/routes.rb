@@ -12,6 +12,7 @@ Rollcall::Application.routes.draw do
 
   resources :users do
     resources :metadata
+    resources :groups
   end
   
   resources :groups do
@@ -19,8 +20,8 @@ Rollcall::Application.routes.draw do
       put :add_member
       put :remove_member
     end
-    resources :memberships, :controller => 'group_memberships'
     resources :metadata
+    resources :groups
   end
 
   resources :sessions do
