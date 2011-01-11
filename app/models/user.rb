@@ -10,6 +10,10 @@ class User < ActiveRecord::Base
   
   has_many :metadata, :as => :about, :autosave => true,
     :autosave => true, :dependent => :destroy
+    
+  validates_presence_of :username, :kind
+  validates_format_of :kind, :with => /^Student|Instructor|Admin$/,
+    :message => "must be 'Student', 'Instructor', or 'Admin'"
   
   include MetadataAccessorMixin
 
