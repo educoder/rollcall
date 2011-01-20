@@ -15,7 +15,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @users }
-      format.json { render :json => @users }
+      format.json { render :json => @users, :callback => params[:callback] }
     end
   end
 
@@ -36,7 +36,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @user }
-      format.json { render :json => @user }
+      format.json { render :json => @user, :callback => params[:callback] }
     end
   end
 
@@ -66,11 +66,11 @@ class UsersController < ApplicationController
       if @user.save
         format.html { redirect_to(@user, :notice => 'User was successfully created.') }
         format.xml  { render :xml => @user, :status => :created, :location => @user }
-        format.json  { render :json => @user, :status => :created, :location => @user }
+        format.json  { render :json => @user, :status => :created, :location => @user, :callback => params[:callback] }
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
-        format.json  { render :json => @user.errors, :status => :unprocessable_entity }
+        format.json { render :json => @user.errors, :status => :unprocessable_entity, :callback => params[:callback] }
       end
     end
   end
@@ -84,9 +84,11 @@ class UsersController < ApplicationController
       if @user.update_attributes(params[:user])
         format.html { redirect_to(@user, :notice => 'User was successfully updated.') }
         format.xml  { head :ok }
+        format.json { render :json => @user, :callback => params[:callback] }
       else
         format.html { render :action => "edit" }
         format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
+        format.json { render :json => @user.errors, :status => :unprocessable_entity, :callback => params[:callback] }
       end
     end
   end
