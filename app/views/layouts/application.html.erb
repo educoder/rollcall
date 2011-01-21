@@ -7,7 +7,7 @@
   <%= javascript_include_tag 'jquery-ui-1.8.2.custom.min.js' %>
   <%= javascript_include_tag 'rails.js' %>
 	<%= javascript_include_tag 'application.js' %>
-  <%= javascript_include_tag params[:controller] if File.exists?(RAILS_ROOT + "/" + javascript_path(params[:controller]))  %>
+  <%= javascript_include_tag params[:controller] if File.exists?(Rails.root.to_s + "/" + javascript_path(params[:controller]))  %>
   <%= csrf_meta_tag %>
 </head>
 <body>
