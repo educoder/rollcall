@@ -41,7 +41,7 @@ describe 'Rollcall RESTful API' do
     
       token = session.xpath('//token').text
     
-      xml = @client["login/validate_token/#{@username}/#{token}.xml"].get
+      xml = @client["login/validate_token/#{token}.xml"].get
     
       session_validated = Nokogiri::XML(xml)
     
@@ -183,7 +183,7 @@ describe 'Rollcall RESTful API' do
     
       token = session['session']['token']
     
-      json = @client["login/validate_token/#{@username}/#{token}.json"].get
+      json = @client["login/validate_token/#{token}.json"].get
     
       session_validated = JSON.parse!(json)
     
