@@ -1,24 +1,20 @@
 class SessionsController < ApplicationController
   include RestfulApiMixin
+  self.responder = RestfulJSONP::JSONPResponder
+
+  respond_to :html,
+    :except => :validate_token
+  respond_to :xml, :json, 
+    :only => [:index, :create, :validate_token]
   
   def index
-    @sessions = Session.all
-    
-    respond_to do |format|
-      format.xml { render :xml => @sessions }
-      format.json { render :json => @sessions }
-    end
+    respond_with(Session.all)
   end
   
   # GET /sessions/new
   # GET /login
   def new
-    @session = Session.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @session }
-    end
+    respond_with(Session.new)
   end
   
   # POST /sessions
@@ -27,21 +23,18 @@ class SessionsController < ApplicationController
   def create
     @session = Session.new(params[:session])
 
-    respond_to do |format|
-      if @session.save
-        flash.now[:notice] = "You have successfully logged in as #{@session.user}."
-        format.html { render :action => 'logged_in' }
-        format.xml  { render :xml => @session, :status => :created }
-        format.json { render :json => @session, :status => :created }
+    if @session.save
+      flash.now[:notice] = "You have successfully logged in as #{@session.user}."
+      respond_with(@session, :status => :created)
+    else
+      @session.password = nil # reset the password so that it is blank in the login box
+      if @session.errors[:username].any? || @session.errors[:password].any?
+        respond_with(@session, :status => :unauthorized) do |format|
+          format.html { render :action => :new }
+        end
       else
-        @session.password = nil # reset the password so that it is blank in the login box
-        format.html { render :action => "new", :status => :unauthorized }
-        if @session.errors[:username].any? || @session.errors[:password].any?
-          format.xml { render :xml => @session.errors.to_xml, :status => :unauthorized }
-          format.json { render :json => @session.errors.to_json, :status => :unauthorized }
-        else
-          format.xml { render :xml => @session.errors.to_xml, :status => :unprocessable_entity }
-          format.json { render :json => @session.errors.to_json, :status => :unprocessable_entity }
+        respond_with(@session, :status => :unprocessable) do |format|
+          format.html { render :action => :new }
         end
       end
     end
@@ -76,10 +69,10 @@ class SessionsController < ApplicationController
     
     respond_to do |format|
       if @error
-        format.json { render :json => @error.to_json, :status => @error.type }
+        format.json { render :json => @error.to_json, :status => @error.type, :callback => params[:callback] }
         format.xml { render :xml => @error.to_xml, :status => @error.type }
       else
-        format.json { render :json => @session.to_json(:include => :user) }
+        format.json { render :json => @session.to_json(:include => :user), :callback => params[:callback] }
         format.xml { render :xml => @session.to_xml(:include => :user) }
       end
     end
