@@ -7,13 +7,15 @@ class SessionsController < ApplicationController
     :only => [:index, :create, :validate_token]
   
   def index
-    respond_with(Session.all)
+    @sessions = Session.all
+    respond_with(@sessions)
   end
   
   # GET /sessions/new
   # GET /login
   def new
-    respond_with(Session.new)
+    @session = Session.new
+    respond_with(@session)
   end
   
   # POST /sessions
@@ -24,11 +26,13 @@ class SessionsController < ApplicationController
 
     if @session.save
       flash.now[:notice] = "You have successfully logged in as #{@session.user}."
-      if params[:destination]
+      if params[:destination].blank?
+        respond_with(@session, :status => :created) do |format|
+          format.html { render :action => :logged_in }
+        end
+      else
         destination_url = add_token_to_url(@session.token, params[:destination])
         redirect_to(destination_url)
-      else
-        respond_with(@session, :status => :created)
       end
     else
       @session.password = nil # reset the password so that it is blank in the login box
@@ -85,10 +89,8 @@ class SessionsController < ApplicationController
     destination_url.gsub!('?&', '?') # ?& should be just ?
     destination_url.gsub!(' ', '+') # spaces should be +
 
-    destination_url = URI.parse(destination_url)
-
     if destination_url.include? "?"
-      if destination_url.query.empty?
+      if URI.parse(destination_url).query.empty?
         query_separator = ""
       else
         query_separator = "&"
