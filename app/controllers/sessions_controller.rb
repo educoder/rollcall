@@ -15,6 +15,7 @@ class SessionsController < ApplicationController
   # GET /login
   def new
     @session = Session.new
+    @destination = params[:destination]
     respond_with(@session)
   end
   
