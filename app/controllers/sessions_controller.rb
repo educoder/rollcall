@@ -1,6 +1,5 @@
 class SessionsController < ApplicationController
   include RestfulApiMixin
-  self.responder = RestfulJSONP::JSONPResponder
 
   respond_to :html,
     :except => :validate_token
@@ -25,7 +24,12 @@ class SessionsController < ApplicationController
 
     if @session.save
       flash.now[:notice] = "You have successfully logged in as #{@session.user}."
-      respond_with(@session, :status => :created)
+      if params[:destination]
+        destination_url = add_token_to_url(@session.token, params[:destination])
+        redirect_to(destination_url)
+      else
+        respond_with(@session, :status => :created)
+      end
     else
       @session.password = nil # reset the password so that it is blank in the login box
       if @session.errors[:username].any? || @session.errors[:password].any?
@@ -62,15 +66,38 @@ class SessionsController < ApplicationController
       @error = RestfulError.new "Invalid token.", :not_found
     end
     
-    respond_to do |format|
-      if @error
-        format.json { render :json => @error.to_json, :status => @error.type, :callback => params[:callback] }
-        format.xml { render :xml => @error.to_xml, :status => @error.type }
-      else
-        format.json { render :json => @session.to_json(:include => :user), :callback => params[:callback] }
-        format.xml { render :xml => @session.to_xml(:include => :user) }
-      end
+    if @error
+      respond_with(@error, :status => @error.type)
+    else
+      respond_with(@session, :include => :user)
     end
+  end
+  
+  private
+  def add_token_to_url(token, destination_url)
+    destination_url = destination_url.dup
+    # first remove any Rollcall attributes from URL 
+    ['token', 'destination'].each do |p|
+      destination_url.sub!(Regexp.new("&?#{p}=[^&]*"), '')
+    end
+
+    destination_url.gsub!(/[\/\?&]$/, '') # remove trailing ?, /, or &
+    destination_url.gsub!('?&', '?') # ?& should be just ?
+    destination_url.gsub!(' ', '+') # spaces should be +
+
+    destination_url = URI.parse(destination_url)
+
+    if destination_url.include? "?"
+      if destination_url.query.empty?
+        query_separator = ""
+      else
+        query_separator = "&"
+      end
+    else
+      query_separator = "?"
+    end
+
+    return destination_url + query_separator + "token=" + token
   end
   
 end
