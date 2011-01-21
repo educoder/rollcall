@@ -32,7 +32,7 @@ Rollcall::Application.routes.draw do
   get '/login' => 'sessions#new'
   post '/login.:format' => 'sessions#create', 
     :defaults => { :format => 'xml' }
-  get '/login/validate_token/:username/:token(.:format)' => 'sessions#validate_token',
+  get '/login/validate_token/:token(.:format)' => 'sessions#validate_token',
     :defaults => { :format => 'xml' }
 
   # The priority is based upon order of creation:

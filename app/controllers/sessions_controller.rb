@@ -14,6 +14,8 @@ class SessionsController < ApplicationController
   # GET /login
   def new
     @session = Session.new
+    
+    @destination = params[:destination]
 
     respond_to do |format|
       format.html # new.html.erb
@@ -26,13 +28,17 @@ class SessionsController < ApplicationController
   # POST /sessions.json
   def create
     @session = Session.new(params[:session])
-
+    
     respond_to do |format|
       if @session.save
-        flash.now[:notice] = "You have successfully logged in as #{@session.user}."
-        format.html { render :action => 'logged_in' }
-        format.xml  { render :xml => @session, :status => :created }
-        format.json { render :json => @session, :status => :created }
+        if params[:destination]
+          format.html { redirect_to params[:destination]+"?token="+@session.token }
+        else
+          flash.now[:notice] = "You have successfully logged in as #{@session.user}."
+          format.html { render :action => 'logged_in' }
+          format.xml  { render :xml => @session, :status => :created }
+          format.json { render :json => @session, :status => :created }
+        end
       else
         @session.password = nil # reset the password so that it is blank in the login box
         format.html { render :action => "new", :status => :unauthorized }
@@ -54,24 +60,19 @@ class SessionsController < ApplicationController
     head :method_not_allowed
   end
   
-  # GET /sessions/validate_token.xml?token=123abc456def&username=mzukowski
-  # GET /login/validate_token/mzukowski/123abc456def.xml
+  # GET /sessions/validate_token.xml?token=123abc456def
+  # GET /login/validate_token/123abc456def.xml
   def validate_token
-    username = params[:username]
     token = params[:token]
     
-    if username.blank?
-      @error = RestfulError.new "Missing 'username' parameter!", :bad_request
-    elsif token.blank?
+    if token.blank?
       @error = RestfulError.new "Missing 'token' parameter!", :bad_request
     else
-      @session = Session.find(:first, 
-        :conditions => ['token = ? AND users.username = ?', token, username], 
-        :include => :user)
+      @session = Session.find_by_token(token)
     end
     
     if @session.nil?
-      @error = RestfulError.new "Invalid username or token.", :not_found
+      @error = RestfulError.new "Invalid token.", :not_found
     end
     
     respond_to do |format|

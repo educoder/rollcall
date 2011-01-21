@@ -20,6 +20,8 @@
     <%= f.password_field :password %>
   </div>
   <div class="actions">
+		<%= hidden_field_tag('destination', @destination)%>
+	
     <%= f.submit("Login") %>
   </div>
 <% end %>
