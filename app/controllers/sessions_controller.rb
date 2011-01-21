@@ -73,7 +73,6 @@ class SessionsController < ApplicationController
     end
     
     if @error
-      debugger
       respond_with(@error, :status => @error.type)
     else
       respond_with(@session, :include => :user)
