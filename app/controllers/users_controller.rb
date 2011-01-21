@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
   include RestfulApiMixin
   
+  respond_to :html, :xml, :json
+  
   # GET /users
   # GET /users.xml
   # GET /users.json
@@ -12,11 +14,7 @@ class UsersController < ApplicationController
       @users = User.all
     end
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @users }
-      format.json { render :json => @users, :callback => params[:callback] }
-    end
+    respond_with(@users)
   end
 
   # GET /users/1
@@ -33,22 +31,12 @@ class UsersController < ApplicationController
       end
     end
 
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @user }
-      format.json { render :json => @user, :callback => params[:callback] }
-    end
+    respond_with(@user)
   end
 
   # GET /users/new
-  # GET /users/new.xml
   def new
     @user = User.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @user }
-    end
   end
 
   # GET /users/1/edit
@@ -61,36 +49,16 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(params[:user])
-
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to(@user, :notice => 'User was successfully created.') }
-        format.xml  { render :xml => @user, :status => :created, :location => @user }
-        format.json  { render :json => @user, :status => :created, :location => @user, :callback => params[:callback] }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
-        format.json { render :json => @user.errors, :status => :unprocessable_entity, :callback => params[:callback] }
-      end
-    end
+    flash[:notice] = 'User was successfully created' if @user.save
+    respond_with(@user)
   end
 
   # PUT /users/1
   # PUT /users/1.xml
   def update
     @user = User.find(params[:id])
-
-    respond_to do |format|
-      if @user.update_attributes(params[:user])
-        format.html { redirect_to(@user, :notice => 'User was successfully updated.') }
-        format.xml  { head :ok }
-        format.json { render :json => @user, :callback => params[:callback] }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
-        format.json { render :json => @user.errors, :status => :unprocessable_entity, :callback => params[:callback] }
-      end
-    end
+    flash[:notice] = 'User was successfully updated' if @user.update_attributes(params[:user])
+    respond_with(@user)
   end
 
   # DELETE /users/1
@@ -99,9 +67,10 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @user.destroy
 
-    respond_to do |format|
+    respond_with(@user) do
       format.html { redirect_to(users_url) }
       format.xml  { head :ok }
+      format.json { head :ok }
     end
   end
 end
