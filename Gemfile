@@ -9,6 +9,8 @@ gem 'rails', '3.0.0'
 gem 'mysql'
 gem 'builder'
 
+gem 'restful_jsonp'
+
 # Use unicorn as the web server
 # gem 'unicorn'
 
