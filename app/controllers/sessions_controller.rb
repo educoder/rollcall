@@ -23,10 +23,11 @@ class SessionsController < ApplicationController
   # POST /sessions.json
   def create
     @session = Session.new(params[:session])
+    @destination = params[:destination]
 
     if @session.save
       flash.now[:notice] = "You have successfully logged in as #{@session.user}."
-      if params[:destination].blank?
+      if @destination.blank?
         respond_with(@session, :status => :created) do |format|
           format.html { render :action => :logged_in }
         end
@@ -71,6 +72,7 @@ class SessionsController < ApplicationController
     end
     
     if @error
+      debugger
       respond_with(@error, :status => @error.type)
     else
       respond_with(@session, :include => :user)
