@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cms</title>
+  <link href="/stylesheets/scaffold.css?1295630406" media="screen" rel="stylesheet" type="text/css" />
+
+  <script src="/javascripts/application.js?1296249551" type="text/javascript"></script>
+  <script src="/javascripts/strophe.js?1295631393" type="text/javascript"></script>
+  <script src="/javascripts/jquery.min.js?1295633649" type="text/javascript"></script>
+  <script src="/javascripts/jquery-ui.min.js?1295633741" type="text/javascript"></script>
+  
+  <meta name="csrf-param" content="authenticity_token"/>
+<meta name="csrf-token" content="QMvNzMgznHtVTXBBnPs7R7/cgUHv+o6oWwa+hgAIpck="/>
+</head>
+<body>
+
+<h1 id="welcomeHeader"></h1>
+<h2>Fill the form below and press submit</h2>
+
+<script type="text/javascript">
+  
+  username = 's3_test_1';
+  password = 'encorelab';
+
+  $(document).ready(function(){
+    /*
+     * Setup form
+     */
+    $('#question_form').submit(submit_question_form);
+
+    /*
+     * Authenticate the user
+     */
+    authenticate();
+
+    /*
+     * Connect to XMPP server
+     */
+    connect_to_xmpp();
+  });
+  
+
+  function submit_question_form(){
+    var form = $('#question_form');
+    var choice = form.find("input[name='choice']:checked").val();
+
+    var domain = Strophe.getDomainFromJid(strophe.jid);
+    s3room = room_name+"@"+room_subdomain+"."+domain;
+
+    /*
+     * Create an event in XMPP using Strophe
+     */
+    var event = $msg({to: s3room ,type: 'groupchat'}).c('body').t('How do you do');
+    
+    strophe.send(event.tree());
+    
+    return false;
+  }
+</script>
+
+<form accept-charset="UTF-8" action="" id="question_form" method="get" name="question_form"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /></div>
+  A <input id="choice_A" name="choice" type="radio" value="A" /> <br/>
+  B <input id="choice_B" name="choice" type="radio" value="B" /> <br/>
+  C <input id="choice_C" name="choice" type="radio" value="C" /> <br/>
+  D <input id="choice_D" name="choice" type="radio" value="D" /> <br/>
+
+  <br/>
+  <br/>
+  <input name="commit" type="submit" value="Submit" />
+</form><input onclick="disconnect_from_xmpp();" type="button" value="Disconnect" />
+
+</body>
+</html>
