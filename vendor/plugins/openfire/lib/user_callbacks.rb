@@ -7,9 +7,9 @@ OPENFIRE_USERSERVICE_SECRET = "encores3encore"
 OPENFIRE_ROLLCALL_GROUP = "rollcall"
 
 User.class_eval do
-  after_create :create_account_in_openfire
-  after_update :update_account_in_openfire
-  after_destroy :delete_account_in_openfire
+  before_create :create_account_in_openfire
+  before_update :update_account_in_openfire
+  before_destroy :delete_account_in_openfire
   
   def create_account_in_openfire
     openfire_userservice_request('add',
@@ -50,6 +50,10 @@ User.class_eval do
     RestClient.log = Logger.new(STDOUT)
     response = RestClient.get(url)
     
-    # TODO: parse response to detect errors
+    unless response =~ /<result>ok<\/result>/
+      self.errors.add_to_base("Couldn't #{type} account in OpenFire!\n\n#{response.body}")
+    end
+    
+    return response
   end
 end
