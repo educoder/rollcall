@@ -50,7 +50,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
     flash[:notice] = 'User was successfully created' if @user.save
-    respond_with(@user)
+    respond_with(@user, :methods => :encrypted_password)
   end
 
   # PUT /users/1
@@ -58,7 +58,7 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     flash[:notice] = 'User was successfully updated' if @user.update_attributes(params[:user])
-    respond_with(@user)
+    respond_with(@user, :methods => :encrypted_password)
   end
 
   # DELETE /users/1

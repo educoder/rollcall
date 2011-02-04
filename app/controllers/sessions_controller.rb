@@ -75,7 +75,7 @@ class SessionsController < ApplicationController
     if @error
       respond_with(@error, :status => @error.type)
     else
-      respond_with(@session, :include => :user)
+      respond_with(@session, :include => {:user => {:methods => :encrypted_password, :except => :password}})
     end
   end
   

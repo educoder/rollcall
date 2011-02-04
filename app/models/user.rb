@@ -1,3 +1,5 @@
+require 'digest/sha1'
+
 class User < ActiveRecord::Base
   KINDS = ['Student', 'Instructor', 'Admin']
   
@@ -30,5 +32,12 @@ class User < ActiveRecord::Base
     "#{username}@encorelab.org"
   end
 
+  def encrypted_password
+    if password.blank?
+      nil
+    else
+      Digest::SHA1.hexdigest(password)
+    end
+  end
 
 end
