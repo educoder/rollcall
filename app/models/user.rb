@@ -1,6 +1,10 @@
 class User < ActiveRecord::Base
   KINDS = ['Student', 'Instructor', 'Admin']
   
+  # can't change username after creation because this acts
+  # as a link to the corresponding OpenFire account
+  attr_readonly :username
+  
   has_many :sessions,
     :dependent => :destroy
   

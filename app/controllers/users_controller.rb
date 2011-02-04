@@ -48,7 +48,6 @@ class UsersController < ApplicationController
   # POST /users.xml
   # POST /users.json
   def create
-    debugger
     @user = User.new(params[:user])
     flash[:notice] = 'User was successfully created' if @user.save
     respond_with(@user)

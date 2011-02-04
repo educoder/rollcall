@@ -13,7 +13,11 @@
 
   <div class="field">
     <%= f.label :username %><br />
-    <%= f.text_field :username %>
+		<% if @user.new_record? %>
+	    <%= f.text_field :username %>
+		<% else %>
+			<%= @user.username %>
+		<% end %>
   </div>
 	<div class="field">
     <%= f.label :password %><br />
