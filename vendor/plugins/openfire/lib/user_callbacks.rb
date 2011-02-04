@@ -2,7 +2,7 @@ require 'rest_client'
 require 'uri'
 require 'user'
 
-OPENFIRE_USERSERVICE_URL = "http://proto.encorelab.org:9090/plugins/userService/userService"
+OPENFIRE_USERSERVICE_URL = "http://proto.encorelab.org:9090/plugins/userService/userservice"
 OPENFIRE_USERSERVICE_SECRET = "encores3encore"
 OPENFIRE_ROLLCALL_GROUP = "rollcall"
 
@@ -16,7 +16,7 @@ User.class_eval do
       self.username,
       self.password,
       self.email,
-      self.display_name
+      self.display_name + " (#{id})"
     )
   end
 
@@ -25,7 +25,7 @@ User.class_eval do
       self.username,
       self.password,
       self.email,
-      self.display_name
+      self.display_name + " (#{id})"
     )
   end
   
@@ -48,6 +48,8 @@ User.class_eval do
     end
     
     RestClient.log = Logger.new(STDOUT)
-    RestClient.get(url)
+    response = RestClient.get(url)
+    
+    # TODO: parse response to detect errors
   end
 end
