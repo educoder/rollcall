@@ -16,7 +16,7 @@ User.class_eval do
       self.username,
       self.password,
       self.email,
-      self.display_name + " (#{id})"
+      self.display_name
     )
   end
 
