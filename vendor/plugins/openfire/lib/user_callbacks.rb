@@ -1,8 +1,9 @@
-require 'net/http'
+require 'rest_client'
 require 'uri'
+require 'user'
 
-OPENFIRE_USERSERVICE_URL = "http://proto.encorelab.org:9090/plugins/userService"
-OPENFIRE_USERSERVICE_SECRET = "encore-s3-encore"
+OPENFIRE_USERSERVICE_URL = "http://proto.encorelab.org:9090/plugins/userService/userService"
+OPENFIRE_USERSERVICE_SECRET = "encores3encore"
 OPENFIRE_ROLLCALL_GROUP = "rollcall"
 
 User.class_eval do
@@ -36,16 +37,17 @@ User.class_eval do
 
   private
   def openfire_userservice_request(type, username, password = nil, email = nil, name = nil)
-    url = "#{OPENFIRE_USERSERVICE_URL}/?type=#{type}" +
-      "&secret=#{OPENFIRE_USERSERVICE_SECRET}" +
-      "&username=#{username}&groups=rollcall"
+    url = "#{OPENFIRE_USERSERVICE_URL}?type=#{URI.escape(type)}" +
+      "&secret=#{URI.escape(OPENFIRE_USERSERVICE_SECRET)}" +
+      "&username=#{URI.escape(username)}&groups=rollcall"
 
     if type != 'delete'
-      url << "&password=#{password}" unless password.blank?
-      url << "&name=#{name}" unless name.blank?
-      url << "&email=#{email}" unless email.blank?
+      url << "&password=#{URI.escape(password)}" unless password.blank?
+      url << "&name=#{URI.escape(name)}" unless name.blank?
+      url << "&email=#{URI.escape(email)}" unless email.blank?
     end
     
-    Net::HTTP.get(URI.parse(url))
+    RestClient.log = Logger.new(STDOUT)
+    RestClient.get(url)
   end
 end
