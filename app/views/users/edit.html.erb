@@ -1,5 +1,6 @@
 <h1>Editing user</h1>
 
+<%= button_to("Delete User", user_path(@user), :method => :delete, :style => 'margin-bottom: 1em') %>
 <%= render 'form' %>
 
 <%= link_to 'Show', @user %> |
