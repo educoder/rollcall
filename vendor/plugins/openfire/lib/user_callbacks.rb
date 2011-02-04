@@ -14,7 +14,7 @@ User.class_eval do
   def create_account_in_openfire
     openfire_userservice_request('add',
       self.username,
-      self.password,
+      self.encrypted_password,
       self.email,
       self.display_name
     )
@@ -23,7 +23,7 @@ User.class_eval do
   def update_account_in_openfire
     openfire_userservice_request('update',
       self.username,
-      self.password,
+      self.encrypted_password,
       self.email,
       self.display_name + " (#{id})"
     )
