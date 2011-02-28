@@ -10,6 +10,10 @@
   <%= @user.display_name %>
 </p>
 
+<p>
+  <b>Encrypted password:</b>
+  <%= @user.encrypted_password %>
+</p>
 
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>
