@@ -23,6 +23,10 @@
     <%= f.label :password %><br />
     <%= f.text_field :password %>
   </div>
+	<div>
+	  <b>Encrypted password:</b>
+	  <%= @user.encrypted_password %>
+	</div>
   <div class="field">
     <%= f.label :display_name %><br />
     <%= f.text_field :display_name %>
