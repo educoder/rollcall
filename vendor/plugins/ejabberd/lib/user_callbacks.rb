@@ -31,9 +31,9 @@ User.class_eval do
     RestClient.log = Logger.new(STDOUT)
     response = RestClient.post(url, command)
     
-    unless response =~ /<result>ok<\/result>/
-      self.errors.add_to_base("Couldn't #{type} account in OpenFire!\n\n#{response.body}")
-    end
+    # unless response =~ /<result>ok<\/result>/
+    #   self.errors.add_to_base("Couldn't #{type} account in OpenFire!\n\n#{response.body}")
+    # end
     
     return response
   end
