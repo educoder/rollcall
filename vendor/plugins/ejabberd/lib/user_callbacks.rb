@@ -29,7 +29,13 @@ User.class_eval do
     url = EJABBERD_MOD_REST_URL
     
     RestClient.log = Logger.new(STDOUT)
-    response = RestClient.post(url, command)
+    
+    begin
+      response = RestClient.post(url, command)
+    rescue RestClient::InternalServerError => e
+      self.errors.add_to_base("Ejabberd error: #{e}")
+      response = e
+    end
     
     # unless response =~ /<result>ok<\/result>/
     #   self.errors.add_to_base("Couldn't #{type} account in OpenFire!\n\n#{response.body}")
