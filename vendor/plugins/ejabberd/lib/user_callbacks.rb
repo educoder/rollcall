@@ -15,12 +15,12 @@ User.class_eval do
   end
 
   def update_account_in_openfire
-    command %{change_password "#{self.username}" "proto.encorelab.org" "#{self.encrypted_password}"}
+    command = %{change_password "#{self.username}" "proto.encorelab.org" "#{self.encrypted_password}"}
     ejabberd_rest_request(command)
   end
   
   def delete_account_in_openfire
-    command %{unregister "#{self.username}" "proto.encorelab.org"}
+    command = %{unregister "#{self.username}" "proto.encorelab.org"}
     ejabberd_rest_request(command)
   end
 
