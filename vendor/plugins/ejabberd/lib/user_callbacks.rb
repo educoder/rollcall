@@ -33,7 +33,7 @@ User.class_eval do
     begin
       response = RestClient.post(url, command)
     rescue RestClient::InternalServerError => e
-      self.errors.add_to_base("Ejabberd error: #{e}")
+      self.errors.add_to_base("Ejabberd command `#{command}` resulted in error: #{e}")
       response = e
     end
     
