@@ -1,24 +1,24 @@
 class Session < ActiveRecord::Base
-  attr_accessor :username, :password
+  attr_accessor :login, :password
   
-  belongs_to :user
+  belongs_to :account
   
-  before_create :associate_with_user_from_username,
+  before_create :associate_with_account_from_login,
                 :generate_token!
   validate :validate_credentials 
 
-  def associate_with_user_from_username
-    unless self.username.blank?
-      self.user = User.find_by_username(self.username)
+  def associate_with_account_from_login
+    unless self.login.blank?
+      self.account = Account.find_by_login(self.login)
     end
   end
   
   def validate_credentials
-    user = User.find_by_username(username)
+    account = Account.find_by_login(login)
     
-    if user.nil?
-      errors[:username] << "is invalid."
-    elsif password.blank? || password != user.password
+    if account.nil?
+      errors[:login] << "is invalid."
+    elsif password.blank? || password != account.password
       errors[:password] << "is invalid."
     end
   end

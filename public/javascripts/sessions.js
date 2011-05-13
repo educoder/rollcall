@@ -1,3 +1,3 @@
 $(document).ready(function () {
-  $('#login #session_username').focus()
+  $('#login #session_login').focus()
 })

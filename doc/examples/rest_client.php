@@ -22,9 +22,9 @@ $pest = new PestXML($rollcall_site_url);
 // Fetch all Users
 $users = $pest->get('/users.xml');
 
-// Print the display name and username for each User returned.
+// Print the display name and login for each User returned.
 foreach($users->user as $user) {
-   echo $user->{'display-name'}." (".$user->username.")\n";
+   echo $user->{'display-name'}." (".$user->login.")\n";
 }
 
 
@@ -44,12 +44,12 @@ $id = $users->user[0]->id;
 // Fetch the User resource its ID
 $user = $pest->get('/users/'.$id.'.xml');
 
-echo $user->{'display-name'}." (".$user->username.")\n";
+echo $user->{'display-name'}." (".$user->login.")\n";
 
-// You can also fetch a User by their username
-$username = 'bobama';
+// You can also fetch a User by their login
+$login = 'bobama';
 try {
-  $user2 = $pest->get('/users/'.$username.'.xml');
+  $user2 = $pest->get('/users/'.$login.'.xml');
 } catch (Pest_NotFound $e) {
   echo $e->getMessage();
 }
@@ -61,7 +61,7 @@ try {
 // Note that the data array must be nested under a 'user' key.
 $data = array(
   'user' => array(
-    'username' => "jdoe",
+    'login' => "jdoe",
     'display_name' => "John Doe",
     'kind' => "Instructor",
     'metadata' => array(
@@ -72,7 +72,7 @@ $data = array(
 
 $user = $pest->post('/users.xml', $data);
 
-echo $user->{'display-name'}." (".$user->username.")\n";
+echo $user->{'display-name'}." (".$user->login.")\n";
 
 $id = $user->id;
 

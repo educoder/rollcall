@@ -1,7 +1,7 @@
 module ApplicationHelper
   def link_to_edit(record)
     content_tag(:span, :class => 'edit action') do
-      "[ #{link_to('edit', edit_polymorphic_path(record))} ]"
+      raw "[ #{link_to('edit', edit_polymorphic_path(record))} ]"
     end
   end
   

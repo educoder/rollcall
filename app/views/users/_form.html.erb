@@ -1,32 +1,14 @@
 <%= form_for(@user) do |f| %>
+  
   <% if @user.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
-
-      <ul>
-      <% @user.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
+      <%= f.error_messages(:message => "",
+        :header_message => "The #{@user.class.name} couldn't be saved to the database because:") %>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= f.label :username %><br />
-		<% if @user.new_record? %>
-	    <%= f.text_field :username %>
-		<% else %>
-			<%= @user.username %>
-		<% end %>
-  </div>
-	<div class="field">
-    <%= f.label :password %><br />
-    <%= f.text_field :password %>
-  </div>
-	<div class="field">
-	  <b>Encrypted password:</b><br/>
-	  <%= @user.encrypted_password %>
-	</div>
+  
+  <%= render(:partial => 'accounts/form', :locals => {:f => f}) %>
+	
   <div class="field">
     <%= f.label :display_name %><br />
     <%= f.text_field :display_name %>

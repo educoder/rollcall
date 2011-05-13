@@ -27,7 +27,7 @@ class SessionsController < ApplicationController
     @destination = params[:destination]
 
     if @session.save
-      flash.now[:notice] = "You have successfully logged in as #{@session.user}."
+      flash.now[:notice] = "You have successfully logged in as #{@session.account}."
       if @destination.blank?
         respond_with(@session, :status => :created) do |format|
           format.html { render :action => :logged_in }
@@ -38,7 +38,7 @@ class SessionsController < ApplicationController
       end
     else
       @session.password = nil # reset the password so that it is blank in the login box
-      if @session.errors[:username].any? || @session.errors[:password].any?
+      if @session.errors[:login].any? || @session.errors[:password].any?
         respond_with(@session, :status => :unauthorized) do |format|
           format.html { render :action => :new }
         end
@@ -75,7 +75,7 @@ class SessionsController < ApplicationController
     if @error
       respond_with(@error, :status => @error.type)
     else
-      respond_with(@session, :include => {:user => {:methods => :encrypted_password, :except => :password}})
+      respond_with(@session, :include => {:account => {:methods => :encrypted_password, :except => :password}})
     end
   end
   

@@ -10,7 +10,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100818200429) do
+ActiveRecord::Schema.define(:version => 20110511155531) do
+
+  create_table "accounts", :force => true do |t|
+    t.string   "login"
+    t.string   "password"
+    t.string   "type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "accounts", ["login", "password"], :name => "index_accounts_on_login_and_password"
+  add_index "accounts", ["login"], :name => "index_accounts_on_login"
 
   create_table "curnits", :force => true do |t|
     t.string   "name"
@@ -34,8 +45,10 @@ ActiveRecord::Schema.define(:version => 20100818200429) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "kind"
+    t.integer  "account_id"
   end
 
+  add_index "groups", ["account_id"], :name => "index_groups_on_account_id"
   add_index "groups", ["kind"], :name => "index_groups_on_kind"
   add_index "groups", ["run_id"], :name => "index_groups_on_run_id"
 
@@ -61,27 +74,25 @@ ActiveRecord::Schema.define(:version => 20100818200429) do
   add_index "runs", ["curnit_id"], :name => "index_runs_on_curnit_id"
 
   create_table "sessions", :force => true do |t|
-    t.integer  "user_id"
+    t.integer  "account_id"
     t.string   "token"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "sessions", ["token", "user_id"], :name => "index_sessions_on_token_and_user_id"
+  add_index "sessions", ["account_id"], :name => "index_sessions_on_user_id"
+  add_index "sessions", ["token", "account_id"], :name => "index_sessions_on_token_and_user_id"
   add_index "sessions", ["token"], :name => "index_sessions_on_token"
-  add_index "sessions", ["user_id"], :name => "index_sessions_on_user_id"
 
   create_table "users", :force => true do |t|
-    t.string   "username"
-    t.string   "password"
     t.string   "display_name"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "kind"
+    t.integer  "account_id"
   end
 
+  add_index "users", ["account_id"], :name => "index_users_on_account_id"
   add_index "users", ["kind"], :name => "index_users_on_kind"
-  add_index "users", ["username", "password"], :name => "index_users_on_username_and_password"
-  add_index "users", ["username"], :name => "index_users_on_username"
 
 end

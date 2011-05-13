@@ -16,8 +16,8 @@ describe 'Rollcall RESTful API' do
     it "should create a User and return the new User's data and metadata" do
       user = create_test_user
     
-      user.xpath('//username').text.should == @username
-      user.xpath('//password').text.should == @password
+      user.xpath('//account/login').text.should == @login
+      user.xpath('//account/password').text.should == @password
       user.xpath('//display-name').text.should == "Test User #{@rand}"
       user.xpath('//kind').text.should == "Student"
       user.xpath('//metadata/foo').text.should == "bar"
@@ -30,14 +30,14 @@ describe 'Rollcall RESTful API' do
     
       xml = @client['login.xml'].post(
         :session => {
-          :username => @username,
+          :login => @login,
           :password => @password,
         }
       )
     
       session = Nokogiri::XML(xml)
-    
-      session.xpath('//user-id').text.should == @user.xpath('//id').text
+      
+      session.xpath('//account-id').text.should == @user.xpath('//account/id').text
     
       token = session.xpath('//token').text
     
@@ -45,9 +45,9 @@ describe 'Rollcall RESTful API' do
     
       session_validated = Nokogiri::XML(xml)
     
-      session_validated.xpath('//user-id').text.should == session.xpath('//user-id').text
+      session_validated.xpath('//account-id').text.should == session.xpath('//account-id').text
     end
-  
+    
   
     it 'should reject logins with invalid credentials' do
       user = create_test_user
@@ -55,7 +55,7 @@ describe 'Rollcall RESTful API' do
       lambda {
         @client['login.xml'].post(
           :session => {
-            :username => "INVALID USERNAME",
+            :login => "INVALID USERNAME",
             :password => @password,
           }
         )
@@ -64,22 +64,22 @@ describe 'Rollcall RESTful API' do
       lambda {
         @client['login.xml'].post(
           :session => {
-            :username => @username,
+            :login => @login,
             :password => "INVALID PASSWORD",
           }
         )
       }.should raise_exception(RestClient::Request::Unauthorized)
     
-      # test blank username/password
+      # test blank login/password
       lambda {
         @client['login.xml'].post(
           :session => {
-            :username => ""
+            :login => ""
           }
         )
       }.should raise_exception(RestClient::Request::Unauthorized)
     end
-  
+
     
     it "should create an Curnit, Run, and Group and return the new Curnit's, Run's, and Group's data and metadata" do    
       curnit = create_test_curnit
@@ -101,18 +101,18 @@ describe 'Rollcall RESTful API' do
   
     it "should add and remove various members to/from a Group" do
       curnit = create_test_curnit
-      run = create_test_run(curnit.xpath('//id').text)
+      run = create_test_run(curnit.xpath('//curnit/id').text)
     
-      group1 = create_test_group(curnit.xpath('//id').text)
+      group1 = create_test_group(curnit.xpath('//curnit/id').text)
       group1_id = group1.xpath('//group/id').text
-      group2 = create_test_group(curnit.xpath('//id').text)
+      group2 = create_test_group(curnit.xpath('//curnit/id').text)
       group2_id = group2.xpath('//group/id').text
     
       user1 = create_test_user
-      user1_id = user1.xpath('//id').text
+      user1_id = user1.xpath('//user/id').text
     
       user2 = create_test_user
-      user2_id = user2.xpath('//id').text
+      user2_id = user2.xpath('//user/id').text
     
       group1 = add_item_to_group(group1, user1)
       group1.xpath("//member/id[text()='#{user1_id}']").text.should == user1_id
@@ -132,23 +132,23 @@ describe 'Rollcall RESTful API' do
     
     it "should be able to retrieve the Groups that a groupable item belongs to" do
       curnit = create_test_curnit
-      run = create_test_run(curnit.xpath('//id').text)
+      run = create_test_run(curnit.xpath('//curnit/id').text)
       
-      group1 = create_test_group(curnit.xpath('//id').text)
+      group1 = create_test_group(curnit.xpath('//curnit/id').text)
       group1_id = group1.xpath('//group/id').text
-      group2 = create_test_group(curnit.xpath('//id').text)
+      group2 = create_test_group(curnit.xpath('//curnit/id').text)
       group2_id = group2.xpath('//group/id').text
     
       user = create_test_user
-      user_id = user.xpath('//id').text
+      user_id = user.xpath('//user/id').text
       
       add_item_to_group(group1, user)
       add_item_to_group(group2, user)
       
-      xml = @client["users/#{user_id}/groups.xml"]
+      xml = @client["users/#{user_id}/groups.xml"].get
       groups = parse_response(xml, 'xml')
 
-      group_ids = groups.xpath('//group').collect{|g| g['id']}
+      group_ids = groups.xpath('//group/id').collect{|id| id.text}
       
       group_ids.should include(group1_id)
       group_ids.should include(group2_id)
@@ -158,82 +158,82 @@ describe 'Rollcall RESTful API' do
   describe 'JSON' do
     it "should create a User and return the new User's data and metadata" do
       user = create_test_user('json')
-    
-      user['user']['username'].should == @username
-      user['user']['password'].should == @password
+
+      user['user']['account']['login'].should == @login
+      user['user']['account']['password'].should == @password
       user['user']['display_name'].should == "Test User #{@rand}"
       user['user']['kind'].should == "Student"
       user['user']['metadata']['foo'].should == "bar"
       user['user']['metadata']['test'].should == "123"
     end
-    
+ 
     it 'should log in with valid credentials and return the Session data with a token' do
       user = create_test_user('json')
-    
+ 
       json = @client['login.json'].post(
-        :session => {
-          :username => @username,
-          :password => @password,
-        }
-      )
-    
-      session = JSON.parse!(json)
-    
-      session['session']['user_id'].should == @user['user']['id']
-    
-      token = session['session']['token']
-    
-      json = @client["login/validate_token/#{token}.json"].get
-    
-      session_validated = JSON.parse!(json)
-    
-      session_validated['session']['user_id'].should == session['session']['user_id']
-    end
-    
-    it "should create an Curnit, Run, and Group and return the new Curnit's, Run's, and Group's data and metadata" do    
+         :session => {
+           :login => @login,
+           :password => @password,
+         }
+       )
+
+       session = JSON.parse!(json)
+
+       session['session']['account_id'].should == @user['user']['account']['id']
+
+       token = session['session']['token']
+
+       json = @client["login/validate_token/#{token}.json"].get
+
+       session_validated = JSON.parse!(json)
+
+       session_validated['session']['user_id'].should == session['session']['user_id']
+     end
+
+     it "should create an Curnit, Run, and Group and return the new Curnit's, Run's, and Group's data and metadata" do    
       curnit = create_test_curnit('json')
-    
+
       curnit['curnit']['name'].should_not be_blank
       curnit['curnit']['metadata']['creator'].should_not be_blank
-    
+
       run = create_test_run(curnit['curnit']['id'], 'json')
-    
+
       run['run']['name'].should_not be_blank
       run['run']['metadata']['start-time'].should_not be_blank
-    
+
       group = create_test_group(curnit['curnit']['id'], 'json')
-    
+
       group['group']['name'].should_not be_blank
       group['group']['metadata']['nested'].should_not be_blank
     end
-    
+
     it "should add and remove various members to/from a Group" do
       curnit = create_test_curnit('json')
       run = create_test_run(curnit['curnit']['id'], 'json')
-    
+
       group1 = create_test_group(curnit['curnit']['id'], 'json')
       group1_id = group1['group']['id']
       group2 = create_test_group(curnit['curnit']['id'], 'json')
       group2_id = group2['group']['id']
-    
+
       user1 = create_test_user('json')
       user1_id = user1['user']['id']
-    
+
       user2 = create_test_user('json')
       user2_id = user2['user']['id']
-    
+
       group1 = add_item_to_group(group1, user1, 'json')
       group1['group']['members'].find{|u| u['user']['id'] == user1_id}['user']['id'].should == user1_id
       group1 = add_item_to_group(group1, user2, 'json')
       group1['group']['members'].find{|u| u['user']['id'] == user2_id}['user']['id'].should == user2_id
-    
+
       group2 = add_item_to_group(group2, user2, 'json')
       group2['group']['members'].find{|u| u['user']['id'] == user2_id}['user']['id'].should == user2_id
       group2['group']['members'].find{|u| u['user']['id'] == user1_id}.nil?.should be_true # user1 wasn't added so shouldn't be there
-    
+
       group1 = add_item_to_group(group1, group2, 'json')
       group1['group']['members'].find{|m| m['group'] && m['group']['id'] == group2_id}['group']['id'].should == group2_id
-    
+
       group1 = remove_item_from_group(group1, user1, 'json')
       group1['group']['members'].find{|m| m['user'] && m['user']['id'] == user1_id}.nil?.should be_true
     end
@@ -241,13 +241,15 @@ describe 'Rollcall RESTful API' do
   
   
   def create_test_user(format = 'xml')
-    @username = "test-user-#{@rand}"
+    @login = "test-user-#{@rand}"
     @password = "testtest#{@rand}"
     
     resp = @client['users.'+format].post(
       :user => {
-        :username => @username,
-        :password => @password,
+        :account => {
+          :login => @login,
+          :password => @password,
+        },
         :display_name => "Test User #{@rand}",
         :kind => 'Student',
         :metadata => {'foo' => 'bar', 'test' => 123}
@@ -260,13 +262,21 @@ describe 'Rollcall RESTful API' do
   end
   
   def create_test_group(run_id, format = 'xml')
+    @login = "test-group-#{@rand}"
+    @password = "testtest#{@rand}"
+    
     resp = @client['groups.'+format].post(
       :group => {
+        :account => {
+          :login => @login,
+          :password => @password
+        },
         :name => "Test Group #{@rand}",
         :run_id => run_id,
         :metadata => {'nested' => {:what => "happened?"}} # FIXME: doesn't work
       }
     )
+
     
     @group = parse_response(resp, format)
     

@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
   include RestfulApiMixin
   
+  before_filter AccountParamsFilter
+  
   respond_to :html, :xml, :json
   
   # GET /users
@@ -14,7 +16,7 @@ class UsersController < ApplicationController
       @users = User.all
     end
 
-    respond_with(@users)
+    respond_with(@users,  :include => {:account => {:methods => :encrypted_password}})
   end
 
   # GET /users/1
@@ -25,23 +27,24 @@ class UsersController < ApplicationController
     if id =~ /^\d+/
       @user = User.find(id)
     else
-      @user = User.find_by_username(id)
+      @user = User.find_by_login(id)
       unless @user
         raise ActiveRecord::RecordNotFound, "User #{id.inspect} doesn't exist!"
       end
     end
 
-    respond_with(@user)
+    respond_with(@user,  :include => {:account => {:methods => :encrypted_password}})
   end
 
   # GET /users/new
   def new
     @user = User.new
+    @user.build_account
   end
 
   # GET /users/1/edit
   def edit
-    @user = User.find(params[:id])
+    @user = User.find(params[:id], :include => :account)
   end
 
   # POST /users
@@ -49,8 +52,12 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(params[:user])
-    flash[:notice] = 'User was successfully created' if @user.save
-    respond_with(@user, :methods => :encrypted_password)
+    if @user.save
+      flash[:notice] = 'User was successfully created'
+    else
+      flash[:error] = 'User was NOT created'
+    end
+    respond_with(@user,  :include => {:account => {:methods => :encrypted_password}})
   end
 
   # PUT /users/1
@@ -58,7 +65,7 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     flash[:notice] = 'User was successfully updated' if @user.update_attributes(params[:user])
-    respond_with(@user, :methods => :encrypted_password)
+    respond_with(@user,  :include => {:account => {:methods => :encrypted_password}})
   end
 
   # DELETE /users/1

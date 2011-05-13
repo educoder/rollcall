@@ -9,6 +9,6 @@ class Run < ActiveRecord::Base
   validates_presence_of :curnit_id
   
   def to_s
-    "#{app}: #{name}"
+    "#{curnit}: #{name}"
   end
 end

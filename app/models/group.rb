@@ -14,6 +14,7 @@ class Group < ActiveRecord::Base
   has_many :groups, :through => :group_memberships
   
   include MetadataAccessorMixin
+  include AccountMixin
   
   validates_presence_of :run_id
   
