@@ -1,5 +1,0 @@
-# Openfire
-module Openfire
-end
-
-
