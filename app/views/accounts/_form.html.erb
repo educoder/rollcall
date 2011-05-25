@@ -4,7 +4,7 @@
 		<% if account_fields.object.new_record? %>
 	    <%= account_fields.text_field :login %>
 		<% else %>
-			<%= account_fields.object.account.login %>
+			<%= account_fields.object.login %>
 		<% end %>
   </div>
 	<div class="field">
