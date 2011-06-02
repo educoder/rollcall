@@ -51,7 +51,7 @@ class UsersController < ApplicationController
   # POST /users.xml
   # POST /users.json
   def create
-    params[:user][:account].delete(:encrypted_password) if params[:user] && params[:user][:account]
+    params[:user][:account].delete('encrypted_password') if params[:user] && params[:user][:account]
     @user = User.new(params[:user])
     if @user.save
       flash[:notice] = 'User was successfully created'
@@ -64,7 +64,7 @@ class UsersController < ApplicationController
   # PUT /users/1
   # PUT /users/1.xml
   def update
-    params[:user][:account].delete(:encrypted_password) if params[:user] && params[:user][:account]
+    params[:user][:account].delete('encrypted_password') if params[:user] && params[:user][:account]
     @user = User.find(params[:id])
     flash[:notice] = 'User was successfully updated' if @user.update_attributes(params[:user])
     respond_with(@user,  :include => {:account => {:methods => :encrypted_password}})
