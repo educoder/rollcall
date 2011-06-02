@@ -27,7 +27,7 @@ class UsersController < ApplicationController
     if id =~ /^\d+/
       @user = User.find(id)
     else
-      @user = User.find_by_login(id)
+      @user = User.find(:first, :conditions => {:login => id}, :include => :account)
       unless @user
         raise ActiveRecord::RecordNotFound, "User #{id.inspect} doesn't exist!"
       end
