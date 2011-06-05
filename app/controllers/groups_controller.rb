@@ -9,24 +9,28 @@ class GroupsController < ApplicationController
   # GET /groups.xml
   # GET /groups.json
   def index
+    constr = {}
+    constr.merge!('name' => params[:name]) if params[:name]
+    constr.merge!('run_id' => params[:run_id]) if params[:run_id]
+    
     if params[:user_id]
       #TODO: check that this actually works!
       @groups = Group.find(:all, :include => :memberships, 
-        :conditions => {'group_memberships' => {'member_id' => params[:user_id],  'member_type' => User.name}}
+        :conditions => {'group_memberships' => {'member_id' => params[:user_id],  'member_type' => User.name}}.merge(constr)
       )
     elsif params[:group_id]
       #TODO: check that this actually works!
       @groups = Group.find(:all, :include => :memberships, 
-        :conditions => {'group_memberships' => {'member_id' => params[:group_id],  'member_type' => Group.name}}
+        :conditions => {'group_memberships' => {'member_id' => params[:group_id],  'member_type' => Group.name}}.merge(constr)
       )
     else
-      @groups = Group.all
+      @groups = Group.find(:all, :conditions => constr)
     end
     
     
     @groupables = Group.all + User.all
 
-    respond_with(@groups,  :include => {:account => {:methods => :encrypted_password}})
+    respond_with(@groups,  :include => {:account => {:methods => :encrypted_password}}, :methods => :members)
   end
 
   # GET /groups/1
@@ -35,7 +39,7 @@ class GroupsController < ApplicationController
   def show
     @group = Group.find(params[:id])
 
-    respond_with(@group,  :include => {:account => {:methods => :encrypted_password}})
+    respond_with(@group,  :include => {:account => {:methods => :encrypted_password}}, :methods => :members)
   end
 
   # GET /groups/new
@@ -75,7 +79,7 @@ class GroupsController < ApplicationController
   # PUT /groups/1.json
   def update
     @group = Group.find(params[:id])
-    flash[:notice] = 'Group was successfully updated' if @user.update_attributes(params[:group])
+    flash[:notice] = 'Group was successfully updated' if @group.update_attributes(params[:group])
     respond_with(@group,  :include => {:account => {:methods => :encrypted_password}})
   end
 

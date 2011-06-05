@@ -8,6 +8,7 @@ Rollcall::Application.routes.draw do
   resources :runs do
     resources :metadata
     resources :users
+    resources :groups
   end
 
   resources :users do
