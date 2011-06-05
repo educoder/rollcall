@@ -16,9 +16,9 @@
     <%= f.text_field :name %>
   </div>
   <div class="field">
-    <%= f.label :curnit_id %><br />
-    <%= f.text_field :curnit_id %>
-  </div>
+	  <%= f.label :curnit_id %><br />
+    <%= f.select :curnit_id, Curnit.all.collect{|curnit| [curnit.to_s, curnit.id]}  %>
+	</div>
   <div class="actions">
     <%= f.submit %>
   </div>
