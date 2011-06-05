@@ -33,6 +33,9 @@ module EjabberdRest
     rescue RestClient::NotAcceptable => e
       @ejabberd_error = "Ejabberd REST service refused to execute the command:\n#{command} (make sure that ejabberd's mod_rest is configured to allow connections from Rollcall's IP)"
       response = e
+    rescue Errno::ECONNREFUSED => e
+      @ejabberd_error = "Ejabberd REST service is not responding: #{e}"
+      response = e
     end
     
     return response
