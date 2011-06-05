@@ -1,18 +1,21 @@
 <%= f.fields_for :account do |account_fields| %>
   <div class="field">
-    <%= account_fields.label :login %><br />
+    <%= account_fields.label :login %>
 		<% if account_fields.object.new_record? %>
-	    <%= account_fields.text_field :login %>
+	    <br /><%= account_fields.text_field :login %>
 		<% else %>
-			<%= account_fields.object.login %>
+			<div class="read-only"><%= account_fields.object.login %></div>
 		<% end %>
   </div>
 	<div class="field">
     <%= account_fields.label :password %><br />
     <%= account_fields.text_field :password %>
   </div>
-	<div class="field">
-	  <%= account_fields.label :encrypted_password %><br/>
-	  <span class="read-only"><%= account_fields.object.encrypted_password %></span>
-	</div>
+  
+  <% unless account_fields.object.new_record? %>
+  	<div class="field">
+  	  <%= account_fields.label :encrypted_password %>
+  	  <div class="read-only"><%= account_fields.object.encrypted_password %></div>
+  	</div>
+	<% end %>
 <% end %>

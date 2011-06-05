@@ -5,7 +5,18 @@
     </div>
   <% end %>
   
-  <%= render(:partial => 'accounts/form', :locals => {:f => f}) %>
+  <fieldset id="account-form">
+    <legend>
+      <%= f.fields_for :account do |af| %>
+        <%= af.hidden_field("_destroy") %>
+      <% end %>
+      <%= check_box_tag("has_account", "1", @group.account && !@group.account.new_record?) %> 
+      <%= label_tag("has_account", "Has Account") %>
+    </legend>
+    <div id="account">
+    <%= render(:partial => 'accounts/form', :locals => {:f => f}) %>
+    </div>
+  </fieldset>
 
   <div class="field">
     <%= f.label :name %><br />
@@ -19,3 +30,20 @@
     <%= f.submit %>
   </div>
 <% end %>
+
+<%= javascript_tag %{
+  $(document).ready(function() {
+    $('#account').#{@group.account && !@group.account.new_record? ? 'show' : 'hide'}()
+    $('#group_account_attributes__destroy').val(#{@group.account && !@group.account.new_record?})
+  })
+  
+  $('#has_account').click(function() {
+    if ($(this).is(':checked')) {
+      $('#account').show()
+      $('#group_account_attributes__destroy').val(false)
+    } else {
+      $('#account').hide()
+      $('#group_account_attributes__destroy').val(true)
+    }
+  })
+} %>
