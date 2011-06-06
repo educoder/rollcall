@@ -9,23 +9,7 @@ class GroupsController < ApplicationController
   # GET /groups.xml
   # GET /groups.json
   def index
-    constr = {}
-    constr.merge!('name' => params[:name]) if params[:name]
-    constr.merge!('run_id' => params[:run_id]) if params[:run_id]
-    
-    if params[:user_id]
-      #TODO: check that this actually works!
-      @groups = Group.find(:all, :include => :memberships, 
-        :conditions => {'group_memberships' => {'member_id' => params[:user_id],  'member_type' => User.name}}.merge(constr)
-      )
-    elsif params[:group_id]
-      #TODO: check that this actually works!
-      @groups = Group.find(:all, :include => :memberships, 
-        :conditions => {'group_memberships' => {'member_id' => params[:group_id],  'member_type' => Group.name}}.merge(constr)
-      )
-    else
-      @groups = Group.find(:all, :conditions => constr)
-    end
+    @groups = find_groups_based_on_params
     
     
     @groupables = Group.all + User.all
@@ -129,6 +113,44 @@ class GroupsController < ApplicationController
     
     respond_to do |format|
       if @group.save
+        format.xml  { render :xml => @group.to_xml(:methods => :members), :status => :ok, :location => @group }
+        format.json { render :json => @group.to_json(:methods => :members), :status => :ok, :location => @group }
+      else
+        format.xml  { render :xml => @group.errors, :status => :unprocessable_entity }
+        format.json { render :json => @group.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+  
+  def add_member_to_random
+    @groups = find_groups_based_on_params
+    @distribution = (params[:distribution] || :random).to_sym
+    #@member = (params[:member][:type].constantize).find(params[:member][:id])
+    
+    case @distribution
+    when :uniform:
+      smallest_group_size = nil
+      smallest_group = nil
+      @groups.to_a.sort_by{rand}.each do |g|
+        if smallest_group_size.nil? || g.members.size < smallest_group_size
+          smallest_group_size = g.members.size
+          smallest_group = g
+          break if smallest_group_size == 0
+        end
+      end
+      
+      @group = smallest_group
+    else # :random
+      @group = @groups[rand(@groups.size)]
+    end
+    
+    @group.memberships.build(
+      :member_id    => params[:member][:id], 
+      :member_type  => params[:member][:type]
+    )
+    
+    respond_to do |format|
+      if @group.save
         format.xml  { render :xml => @group.to_xml(:methods => :members), :status => :created, :location => @group }
         format.json { render :json => @group.to_json(:methods => :members), :status => :created, :location => @group }
       else
@@ -136,5 +158,31 @@ class GroupsController < ApplicationController
         format.json { render :json => @group.errors, :status => :unprocessable_entity }
       end
     end
+  end
+  
+  protected
+  
+  def find_groups_based_on_params
+    constr = {}
+    constr.merge!('name' => params[:name]) if params[:name]
+    constr.merge!('run_id' => params[:run_id]) if params[:run_id]
+    
+    if params[:ids]
+      groups = Group.find(params[:ids])
+    elsif params[:user_id]
+      #TODO: check that this actually works!
+      groups = Group.find(:all, :include => :memberships, 
+        :conditions => {'group_memberships' => {'member_id' => params[:user_id],  'member_type' => User.name}}.merge(constr)
+      )
+    elsif params[:group_id]
+      #TODO: check that this actually works!
+      groups = Group.find(:all, :include => :memberships, 
+        :conditions => {'group_memberships' => {'member_id' => params[:group_id],  'member_type' => Group.name}}.merge(constr)
+      )
+    else
+      groups = Group.find(:all, :conditions => constr)
+    end
+    
+    return groups
   end
 end

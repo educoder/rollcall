@@ -27,13 +27,13 @@ class UsersController < ApplicationController
     if id =~ /^\d+/
       @user = User.find(id)
     else
-      @user = User.find(:first, :conditions => {'accounts.login' => id}, :include => :account)
+      @user = User.find(:first, :conditions => {'accounts.login' => id}, :include => [:account, :groups])
       unless @user
         raise ActiveRecord::RecordNotFound, "User #{id.inspect} doesn't exist!"
       end
     end
 
-    respond_with(@user,  :include => {:account => {:methods => :encrypted_password}})
+    respond_with(@user,  :include => {:groups => {}, :account => {:methods => :encrypted_password}})
   end
 
   # GET /users/new
@@ -51,7 +51,7 @@ class UsersController < ApplicationController
   # POST /users.xml
   # POST /users.json
   def create
-    params[:user][:account].delete('encrypted_password') if params[:user] && params[:user][:account]
+    params[:user][:account_attributes].delete(:encrypted_password) if params[:user] && params[:user][:account_attributes]
     @user = User.new(params[:user])
     if @user.save
       flash[:notice] = 'User was successfully created'
@@ -64,7 +64,9 @@ class UsersController < ApplicationController
   # PUT /users/1
   # PUT /users/1.xml
   def update
-    params[:user][:account].delete('encrypted_password') if params[:user] && params[:user][:account]
+    params[:user][:account_attributes].delete(:encrypted_password) if params[:user] && params[:user][:account_attributes]
+    params[:user].delete(:groups) if params[:user]
+    
     @user = User.find(params[:id])
     flash[:notice] = 'User was successfully updated' if @user.update_attributes(params[:user])
     respond_with(@user,  :include => {:account => {:methods => :encrypted_password}})

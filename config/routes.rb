@@ -21,6 +21,9 @@ Rollcall::Application.routes.draw do
       put :add_member
       put :remove_member
     end
+    collection do
+      put :add_member_to_random
+    end
     resources :metadata
     resources :groups
   end
