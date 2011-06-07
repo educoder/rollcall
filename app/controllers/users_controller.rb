@@ -52,6 +52,7 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     params[:user][:account_attributes].delete(:encrypted_password) if params[:user] && params[:user][:account_attributes]
+    
     @user = User.new(params[:user])
     if @user.save
       flash[:notice] = 'User was successfully created'

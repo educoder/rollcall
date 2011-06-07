@@ -64,9 +64,12 @@ module MetadataAccessorMixin
     end
     
     def []=(key, value)
-      datum = @about._metadata.find_by_key(key)
-      if datum
-        datum.value = value
+      idx = @about._metadata.find_index{|m| m.key == key}
+      
+      if idx
+        # FIXME: this commits the update of the value immediately, which may be unexpected 
+        #        or undersirable (new keys don't get commited until after parent is saved)
+        @about._metadata[idx].value = value
       else
         @about._metadata.build(:key => key, :value => value)
       end

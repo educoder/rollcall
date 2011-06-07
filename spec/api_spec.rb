@@ -237,6 +237,25 @@ describe 'Rollcall RESTful API' do
       group1 = remove_item_from_group(group1, user1, 'json')
       group1['group']['members'].find{|m| m['user'] && m['user']['id'] == user1_id}.nil?.should be_true
     end
+    
+    it "should create and update metadata" do
+      format = 'json'
+      user = create_test_user(format)
+      
+      user['user']['metadata']['foo'].should == "bar"
+      
+      resp = @client["users/#{user['user']['id']}."+format].put(
+        :user => {
+          :metadata => {
+            :foo => "barbarbar!"
+          }
+        }
+      )
+      
+      user2 = parse_response(@client["users/#{user['user']['id']}."+format].get, format)
+      
+      user2['user']['metadata']['foo'].should == "barbarbar!"
+    end
   end
   
   
