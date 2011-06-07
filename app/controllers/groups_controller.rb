@@ -21,8 +21,16 @@ class GroupsController < ApplicationController
   # GET /groups/1.xml
   # GET /groups/1.json
   def show
-    @group = Group.find(params[:id])
-
+    id = params[:id]
+    if id =~ /^\d+/
+      @group = Group.find(id)
+    else
+      @group = Group.find(:first, :conditions => {'accounts.login' => id}, :include => [:account, :groups])
+      unless @group
+        raise ActiveRecord::RecordNotFound, "Group #{id.inspect} doesn't exist!"
+      end
+    end
+    
     respond_with(@group,  :include => {:account => {:methods => :encrypted_password}}, :methods => :members)
   end
 
