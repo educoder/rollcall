@@ -166,6 +166,7 @@ class GroupsController < ApplicationController
     constr = {}
     constr.merge!('name' => params[:name]) if params[:name]
     constr.merge!('run_id' => params[:run_id]) if params[:run_id]
+    constr.merge!('kind' => params[:kind]) if params[:kind]
     
     if params[:ids]
       groups = Group.find(params[:ids])
