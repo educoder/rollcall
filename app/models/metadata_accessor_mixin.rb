@@ -41,6 +41,12 @@ module MetadataAccessorMixin
     def to_xml(opts = {})
       xml = opts[:builder] || ::Builder::XmlMarkup.new(:indent => 2)
       xml.metadata do |metadata_xml|
+        # FIXME: hack to prevent weird behaviour in ActiveResource
+        #        when metadata is empty (can't seem to add metadata when
+        #        it is initially empty)
+        if @about._metadata.empty?
+          metadata_xml.tag!('key', 'value')
+        end
         @about._metadata.each do |datum|
           metadata_xml.tag!(datum.key, datum.value)
         end
