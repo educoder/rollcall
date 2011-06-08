@@ -50,10 +50,10 @@ module MetadataAccessorMixin
         # FIXME: hack to prevent weird behaviour in ActiveResource
         #        when metadata is empty (can't seem to add metadata when
         #        it is initially empty)
-        if @about._metadata.empty?
+        if @about.metadata_pairs.empty?
           metadata_xml.tag!('key', 'value')
         end
-        @about._metadata.each do |datum|
+        @about.metadata_pairs.each do |datum|
           metadata_xml.tag!(datum.key, datum.value)
         end
       end
