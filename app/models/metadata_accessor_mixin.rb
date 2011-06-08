@@ -15,6 +15,11 @@ module MetadataAccessorMixin
         MetadataAccessor.new(self)
       end
       
+      def metadata=(data)
+        meta = MetadataAccessor.new(self)
+        meta.replace(data)
+      end
+      
       has_many :metadata_pairs, :as => :about,
         :class_name => 'Metadata',
         :autosave => true, :dependent => :destroy
@@ -72,33 +77,33 @@ module MetadataAccessorMixin
     end
     
     def [](key)
-      datum = @about.metadata_pair.to_s.detect{|m| m.key.to_s == key.to_s} || # for newly added keys
-        @about.metadata_pair.find_by_key(key.to_s)
+      datum = @about.metadata_pairs.to_s.detect{|m| m.key.to_s == key.to_s} || # for newly added keys
+        @about.metadata_pairs.find_by_key(key.to_s)
         
       datum ? datum.value : nil
     end
     
     def []=(key, value)
-      idx = @about.metadata_pair.to_a.find_index{|m| m.key.to_s == key.to_s}
+      idx = @about.metadata_pairs.to_a.find_index{|m| m.key.to_s == key.to_s}
       
       if idx
         # FIXME: this commits the update of the value immediately, which may be unexpected 
         #        or undersirable (new keys don't get commited until after parent is saved)
-        @about.metadata_pair[idx].value = value
+        @about.metadata_pairs[idx].value = value
       else
-        @about.metadata_pair.build(:key => key.to_s, :value => value)
+        @about.metadata_pairs.build(:key => key.to_s, :value => value)
         puts "value"
       end
     end
     
     def each
-      @about.metadata_pair.find(:all).each do |datum|
+      @about.metadata_pairs.find(:all).each do |datum|
         yield datum
       end
     end
     
     def to_s
-      HashWithIndifferentAccess.new Hash[@about.metadata_pair.find(:all).collect{|md| [md.key, md.value]}]
+      HashWithIndifferentAccess.new Hash[@about.metadata_pairs.find(:all).collect{|md| [md.key, md.value]}]
     end
   end
 end
