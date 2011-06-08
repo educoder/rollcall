@@ -70,6 +70,9 @@ class GroupsController < ApplicationController
   # PUT /groups/1.xml
   # PUT /groups/1.json
   def update
+    params[:group][:account_attributes].delete(:encrypted_password) if params[:group] && params[:group][:account_attributes]
+    params[:group].delete(:groups) if params[:group]
+    
     @group = Group.find(params[:id])
     flash[:notice] = 'Group was successfully updated' if @group.update_attributes(params[:group])
     respond_with(@group,  :include => {:account => {:methods => :encrypted_password}})
