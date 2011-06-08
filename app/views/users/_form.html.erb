@@ -17,6 +17,9 @@
     <%= f.label :kind %><br />
     <%= f.select :kind, User::KINDS %>
   </div>
+  
+  <%= render(:partial => 'metadata/form', :locals => {:f => f})%>
+  
   <div class="actions">
     <%= f.submit %>
   </div>

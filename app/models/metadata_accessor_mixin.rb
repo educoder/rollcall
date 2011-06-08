@@ -1,8 +1,6 @@
 module MetadataAccessorMixin
   def self.included(target)
     target.class_eval do
-      alias_method :_metadata, :metadata
-      
       def to_xml(*args)
         add_metadata_to_serialization_options(*args)
         super(*args)
@@ -16,6 +14,14 @@ module MetadataAccessorMixin
       def metadata
         MetadataAccessor.new(self)
       end
+      
+      has_many :metadata_pairs, :as => :about,
+        :class_name => 'Metadata',
+        :autosave => true, :dependent => :destroy
+      
+      accepts_nested_attributes_for :metadata_pairs,
+        :allow_destroy => true,
+        :reject_if => proc { |attributes| attributes['key'].blank? }
       
       private
         def add_metadata_to_serialization_options(*args)
@@ -55,7 +61,7 @@ module MetadataAccessorMixin
     
     def as_json(opts = {})
       json = {}
-      @about._metadata.each do |datum|
+      @about.metadata_pairs.each do |datum|
         json[datum.key] = datum.value
       end
       return json
@@ -66,29 +72,33 @@ module MetadataAccessorMixin
     end
     
     def [](key)
-      @about._metadata.find_by_key(key.to_s)
+      datum = @about.metadata_pair.to_s.detect{|m| m.key.to_s == key.to_s} || # for newly added keys
+        @about.metadata_pair.find_by_key(key.to_s)
+        
+      datum ? datum.value : nil
     end
     
     def []=(key, value)
-      idx = @about._metadata.find_index{|m| m.key == key}
+      idx = @about.metadata_pair.to_a.find_index{|m| m.key.to_s == key.to_s}
       
       if idx
         # FIXME: this commits the update of the value immediately, which may be unexpected 
         #        or undersirable (new keys don't get commited until after parent is saved)
-        @about._metadata[idx].value = value
+        @about.metadata_pair[idx].value = value
       else
-        @about._metadata.build(:key => key, :value => value)
+        @about.metadata_pair.build(:key => key.to_s, :value => value)
+        puts "value"
       end
     end
     
     def each
-      @about._metadata.find(:all).each do |datum|
+      @about.metadata_pair.find(:all).each do |datum|
         yield datum
       end
     end
     
     def to_s
-      HashWithIndifferentAccess.new Hash[@about._metadata.find(:all).collect{|md| [md.key, md.value]}]
+      HashWithIndifferentAccess.new Hash[@about.metadata_pair.find(:all).collect{|md| [md.key, md.value]}]
     end
   end
 end

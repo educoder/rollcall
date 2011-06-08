@@ -1,33 +1,21 @@
-<%= form_for(@metadata) do |f| %>
-  <% if @metadata.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@metadata.errors.count, "error") %> prohibited this metadata from being saved:</h2>
-
-      <ul>
-      <% @metadata.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+<fieldset id="metadata-form">
+  <table>
+    <thead>
+      <tr>
+        <th>Key</th>
+        <th>Value</th>
+        <th>Delete?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% f.object.metadata_pairs.build %>
+      <%= f.fields_for :metadata_pairs do |mf| %>
+      <tr>
+        <td><%= mf.text_field :key, :style => 'width: 20em' %></td>
+        <td><%= mf.text_field :value, :style => 'width: 20em' %></td>
+        <td style="text-align: center"><%= mf.check_box :_destroy %></td>
+      </tr>
       <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :about_id %><br />
-    <%= f.text_field :about_id %>
-  </div>
-  <div class="field">
-    <%= f.label :about_type %><br />
-    <%= f.text_field :about_type %>
-  </div>
-  <div class="field">
-    <%= f.label :key %><br />
-    <%= f.text_field :key %>
-  </div>
-  <div class="field">
-    <%= f.label :value %><br />
-    <%= f.text_field :value %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+    </tbody>
+  </table>
+</fieldset>

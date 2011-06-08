@@ -1,9 +1,6 @@
 class Group < ActiveRecord::Base
   belongs_to :run
   
-  has_many :metadata, :as => :about, 
-    :autosave => true, :dependent => :destroy
-
   # for items belonging to this group
   has_many :memberships, :class_name => GroupMembership.name, 
     :autosave => true, :dependent => :destroy

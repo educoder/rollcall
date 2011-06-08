@@ -26,9 +26,13 @@
 	  <%= f.label :run_id %><br />
     <%= f.select :run_id, Run.all.collect{|run| [run.to_s, run.id]}  %>
 	</div>
+	
+	<%= render(:partial => 'metadata/form', :locals => {:f => f})%>
+	
   <div class="actions">
     <%= f.submit %>
   </div>
+  
 <% end %>
 
 <%= javascript_tag %{
