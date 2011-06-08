@@ -72,6 +72,7 @@ class GroupsController < ApplicationController
   def update
     params[:group][:account_attributes].delete(:encrypted_password) if params[:group] && params[:group][:account_attributes]
     params[:group][:account].delete(:encrypted_password) if params[:group] && params[:group][:account]
+    params[:group].delete(:members) if params[:group]
     params[:group].delete(:groups) if params[:group]
     
     @group = Group.find(params[:id])
