@@ -12,4 +12,8 @@ module ApplicationHelper
       end
     end
   end
+  
+  def link_back_to_list
+    link_to '« Back to List', {:action => :index}, {:class => "link-back-to-list"}
+  end
 end
