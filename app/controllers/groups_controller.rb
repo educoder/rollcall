@@ -76,7 +76,9 @@ class GroupsController < ApplicationController
     
     @group = Group.find(params[:id])
     flash[:notice] = 'Group was successfully updated' if @group.update_attributes(params[:group])
-    respond_with(@group,  :include => {:account => {:methods => :encrypted_password}})
+    respond_with(@group,  :include => {:account => {:methods => :encrypted_password}}) do |format|
+      format.html {redirect_to edit_group_path(@group)}
+    end
   end
 
   # DELETE /groups/1
