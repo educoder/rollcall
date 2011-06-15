@@ -46,4 +46,6 @@ Rollcall::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
+  
+  config.ejabberd.mod_rest_url = "http://proto.encorelab.org:5285/rest"
 end

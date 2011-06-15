@@ -11,6 +11,8 @@ gem 'builder'
 
 gem 'restful_jsonp', '~> 1.0.2'
 
+gem 'rollcall-ejabberd', :path => '../rollcall-ejabberd' #:git => 'git://github.com/educoder/rollcall-ejabberd.git'
+
 # Use unicorn as the web server
 # gem 'unicorn'
 
