@@ -11,6 +11,14 @@ class User < ActiveRecord::Base
   
   include MetadataAccessorMixin
   include AccountMixin
+  
+  validates :account, :presence => true
+  
+  validate do
+    unless !account || account.valid?
+      self.errors[:base] << "Account could not be #{account.new_record? ? "created" : "updated"}."
+    end
+  end
 
   def to_s
     "#{display_name} (#{login})"

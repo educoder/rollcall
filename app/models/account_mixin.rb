@@ -1,21 +1,14 @@
 module AccountMixin
   def self.included(target)
     target.class_eval do
-      belongs_to :account, :autosave => true
+      has_one :account, :autosave => true,
+        :class_name => "#{self}Account", :as => :for
       
       delegate :login, :to => :account
       delegate :password, :to => :account
       delegate :encrypted_password, :to => :account
       
       accepts_nested_attributes_for :account, :allow_destroy => true
-      
-      #validates :account, :presence => true
-      
-      validate do
-        unless !account || account.valid?
-          self.errors[:base] << "Account could not be #{account.new_record? ? "created" : "updated"}."
-        end
-      end
       
       after_validation do
         # fix weird error messages caused by :autosave => true combined with errors.full_messages

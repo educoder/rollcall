@@ -3,6 +3,7 @@ require 'digest/sha1'
 class Account < ActiveRecord::Base  
   has_many :sessions,
     :dependent => :destroy
+  belongs_to :for, :polymorphic => true
     
   # can't change login after creation because this acts as a
   # link to corresponding accounts in external services (XMPP, etc).
