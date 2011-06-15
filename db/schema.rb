@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110511155531) do
+ActiveRecord::Schema.define(:version => 20110615194755) do
 
   create_table "accounts", :force => true do |t|
     t.string   "login"
@@ -18,8 +18,11 @@ ActiveRecord::Schema.define(:version => 20110511155531) do
     t.string   "type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "for_id"
+    t.string   "for_type"
   end
 
+  add_index "accounts", ["for_id", "for_type"], :name => "index_accounts_on_for_id_and_for_type"
   add_index "accounts", ["login", "password"], :name => "index_accounts_on_login_and_password"
   add_index "accounts", ["login"], :name => "index_accounts_on_login"
 
@@ -27,6 +30,7 @@ ActiveRecord::Schema.define(:version => 20110511155531) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "path"
   end
 
   create_table "group_memberships", :force => true do |t|
@@ -45,10 +49,8 @@ ActiveRecord::Schema.define(:version => 20110511155531) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "kind"
-    t.integer  "account_id"
   end
 
-  add_index "groups", ["account_id"], :name => "index_groups_on_account_id"
   add_index "groups", ["kind"], :name => "index_groups_on_kind"
   add_index "groups", ["run_id"], :name => "index_groups_on_run_id"
 
@@ -89,10 +91,8 @@ ActiveRecord::Schema.define(:version => 20110511155531) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "kind"
-    t.integer  "account_id"
   end
 
-  add_index "users", ["account_id"], :name => "index_users_on_account_id"
   add_index "users", ["kind"], :name => "index_users_on_kind"
 
 end
