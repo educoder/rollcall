@@ -1,4 +1,4 @@
-<%= f.fields_for :account do |account_fields| %>
+<%= f.fields_for :account, f.object.account ? nil : f.object.build_account do |account_fields| %>
   <div class="field">
     <%= account_fields.label :login %>
 		<% if account_fields.object.new_record? %>

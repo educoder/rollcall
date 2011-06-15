@@ -38,7 +38,6 @@ class GroupsController < ApplicationController
   # GET /groups/new.xml
   def new
     @group = Group.new
-    @group.build_account
 
     respond_to do |format|
       format.html # new.html.erb

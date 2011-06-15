@@ -8,13 +8,13 @@
   <fieldset id="account-form">
     <legend>
       <%= f.fields_for :account do |af| %>
-        <%= af.hidden_field("_destroy") %>
+        <%= af.hidden_field("_destroy", :value => false) %>
       <% end %>
       <%= check_box_tag("has_account", "1", @group.account && !@group.account.new_record?) %> 
       <%= label_tag("has_account", "Has Account") %>
     </legend>
     <div id="account">
-    <%= render(:partial => 'accounts/form', :locals => {:f => f}) %>
+      <%= render(:partial => 'accounts/form', :locals => {:f => f}) %>
     </div>
   </fieldset>
 
@@ -38,7 +38,6 @@
 <%= javascript_tag %{
   $(document).ready(function() {
     $('#account').#{@group.account && !@group.account.new_record? ? 'show' : 'hide'}()
-    $('#group_account_attributes__destroy').val(#{@group.account && !@group.account.new_record?})
   })
   
   $('#has_account').click(function() {
