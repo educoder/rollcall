@@ -29,7 +29,7 @@ class SessionsController < ApplicationController
     if @session.save
       flash.now[:notice] = "You have successfully logged in as #{@session.account}."
       if @destination.blank?
-        respond_with(@session, :status => :created) do |format|
+        respond_with(@session, :status => :created,  :include => {:account => {:methods => :encrypted_password, :except => :password}}) do |format|
           format.html { render :action => :logged_in }
         end
       else
