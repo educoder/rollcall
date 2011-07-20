@@ -57,6 +57,18 @@ class SessionsController < ApplicationController
     head :method_not_allowed
   end
   
+  # DELETE /sessions/1
+  # DELETE /sessions/1.xml
+  def destroy
+    @session = Session.find(params[:id])
+    @session.destroy
+
+    respond_with(@session) do |format|
+      format.xml  { head :ok }
+      format.json { head :ok }
+    end
+  end
+  
   # GET /sessions/validate_token.xml?token=123abc456def
   # GET /login/validate_token/123abc456def.xml
   def validate_token
