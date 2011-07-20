@@ -65,7 +65,7 @@ class SessionsController < ApplicationController
 
     respond_with(@session) do |format|
       format.xml  { head :ok }
-      format.json { head :ok }
+      format.json { render :json => @session }
     end
   end
   
@@ -105,7 +105,7 @@ class SessionsController < ApplicationController
 
     respond_with(@session) do |format|
       format.xml  { head :ok }
-      format.json { head :ok }
+      format.json { render :json => @session }
     end
   end
   
