@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
   respond_to :html,
     :except => :validate_token
   respond_to :xml, :json, 
-    :only => [:index, :create, :validate_token]
+    :only => [:index, :create, :validate_token, :invalidate_token]
   
   def index
     @sessions = Session.all
@@ -63,10 +63,7 @@ class SessionsController < ApplicationController
     @session = Session.find(params[:id])
     @session.destroy
 
-    respond_with(@session) do |format|
-      format.xml  { head :ok }
-      format.json { render :json => {} }
-    end
+    respond_with(@session)
   end
   
   # GET /sessions/validate_token.xml?token=123abc456def
@@ -101,11 +98,16 @@ class SessionsController < ApplicationController
       @session = Session.find_by_token(token)
     end
     
-    @session.destroy
-
-    respond_with(@session) do |format|
-      format.xml  { head :ok }
-      format.json { render :json => {} }
+    if @session.nil?
+      @error = RestfulError.new "Invalid token.", :not_found
+    else
+      @session.destroy
+    end
+    
+    if @error
+      respond_with(@error, :status => @error.type)
+    else
+      respond_with(@session)
     end
   end
   
