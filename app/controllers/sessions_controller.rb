@@ -91,6 +91,24 @@ class SessionsController < ApplicationController
     end
   end
   
+  # DELETE /sessions/invalidate_token.xml?token=123abc456def
+  def invalidate_token
+    token = params[:token]
+    
+    if token.blank?
+      @error = RestfulError.new "Missing 'token' parameter!", :bad_request
+    else
+      @session = Session.find_by_token(token)
+    end
+    
+    @session.destroy
+
+    respond_with(@session) do |format|
+      format.xml  { head :ok }
+      format.json { head :ok }
+    end
+  end
+  
   private
   def add_token_to_url(token, destination_url)
     destination_url = destination_url.dup

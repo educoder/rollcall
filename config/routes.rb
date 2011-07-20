@@ -31,6 +31,7 @@ Rollcall::Application.routes.draw do
   resources :sessions do
     collection do
       get :validate_token
+      delete :invalidate_token
     end
   end
   get '/login' => 'sessions#new'
