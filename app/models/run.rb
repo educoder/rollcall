@@ -7,6 +7,7 @@ class Run < ActiveRecord::Base
   include MetadataAccessorMixin
   
   validates_presence_of :curnit_id
+  validates_uniqueness_of :name
   
   def to_s
     "#{curnit}: #{name}"
