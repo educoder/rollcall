@@ -22,7 +22,7 @@
   </div>
   <div class="field">
 	  <%= f.label :curnit_id %><br />
-    <%= f.select :curnit_id, Curnit.all.collect{|curnit| [curnit.to_s, curnit.id]}  %>
+    <%= f.select :curnit_id, Curnit.find(:all, :order => 'created_at DESC').collect{|curnit| [curnit.to_s, curnit.id]}  %>
 	</div>
   <div class="actions">
     <%= f.submit %>
