@@ -22,6 +22,9 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.xml
   # GET /users/1.json
+  # GET /users/mzukowski
+  # GET /users/mzukowski.xml
+  # GET /users/mzukowski.json
   def show
     id = params[:id]
     if id =~ /^\d+/
