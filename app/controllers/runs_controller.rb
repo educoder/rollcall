@@ -19,8 +19,19 @@ class RunsController < ApplicationController
   # GET /runs/1
   # GET /runs/1.xml
   # GET /runs/1.json
+  # GET /runs/wallcology-julia-fall2011
+  # GET /runs/wallcology-julia-fall2011.xml
+  # GET /runs/wallcology-julia-fall2011.json
   def show
-    @run = Run.find(params[:id])
+    id = params[:id]
+    if id =~ /^\d+/
+      @run = Run.find(params[:id])
+    else
+      @run = Run.find(:first, :conditions => {'name' => id})
+      unless @run
+        raise ActiveRecord::RecordNotFound, "Run #{id.inspect} doesn't exist!"
+      end
+    end
 
     respond_to do |format|
       format.html # show.html.erb
