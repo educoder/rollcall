@@ -13,7 +13,11 @@
 
   <div class="field">
     <%= f.label :name %><br />
-    <%= f.text_field :name %>
+  	<% if f.object.new_record? %>
+	    <%= f.label :name %>
+		<% else %>
+			<div class="read-only"><%= f.object.name %></div>
+		<% end %>
   </div>
   <div class="field">
 	  <%= f.label :curnit_id %><br />
