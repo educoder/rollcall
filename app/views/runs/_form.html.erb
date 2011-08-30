@@ -14,7 +14,8 @@
   <div class="field">
     <%= f.label :name %><br />
   	<% if f.object.new_record? %>
-	    <%= f.label :name %>
+  	  <%= f.text_field :name %><br />
+	    (cannot be changed once created)
 		<% else %>
 			<div class="read-only"><%= f.object.name %></div>
 		<% end %>
