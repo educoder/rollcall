@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
   respond_to :html,
     :except => :validate_token
   respond_to :xml, :json, 
-    :only => [:index, :create, :validate_token, :invalidate_token]
+    :only => [:index, :create, :validate_token, :invalidate_token, :create_group]
   
   def index
     @sessions = Session.all
@@ -48,6 +48,54 @@ class SessionsController < ApplicationController
         end
       end
     end
+  end
+  
+  # POST /sessions/group
+  # POST /sessions/group.json
+  # POST /sessions/group.xml
+  #
+  # Creates a session for multiple accounts by finding an existing group
+  # that the given members are already part of, or if the group does not
+  # yet exist by creating it first.
+  def create_group
+    logins = params[:logins]
+    
+    begin
+      @run = Run.find(params[:run_id])
+    rescue ActiveRecord::RecordNotFound
+      render "Invalid run #{@run.inspect}!", :not_acceptable
+    end
+    
+    @for = Account.find(:all, :conditions => ['login IN (?)', logins], :include => :for).collect{|a| a.for}
+    groups = Group.find(:all, :include => :memberships, :conditions => ['group_memberships.member_id IN (?)', @for.collect{|f| f.id}])
+    @group = groups.find{|g| g.members.collect{|m| m.login}.sort == logins.sort}
+      # TODO: figure out what to do if for some reason we return multiple matching groups
+    
+    group_created = false
+    unless @group
+      group_name = logins.join("-")
+      Group.transaction do
+        @group = Group.create(:name => group_name, :run => @run)
+        @group.create_account(:login => group_name, :password => Account.random_password)
+        @for.each{|m| @group.add_member(m)}
+        @group.save!
+        group_created = true
+      end
+    end
+    
+    @session = Session.new(:account => @group.account)
+    
+    # need to do this to make the validator happy (normally creating a session means validating login/password)
+    @session.login = @group.account.login
+    @session.password = @group.account.password
+    
+    if @session.save
+      flash[:notice] = "#{@group.account.login.inspect} successfully #{group_created ? 'created and' : ''} logged in."
+    else
+      flash[:error] = "Session NOT created because: "+@session.errors.full_messages.join("; ")
+    end
+    
+    respond_with(@session, :include => :account)
   end
   
   # GET /sessions/1

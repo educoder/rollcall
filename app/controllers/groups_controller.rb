@@ -96,10 +96,9 @@ class GroupsController < ApplicationController
   def add_member
     @group = Group.find(params[:id])
     
-    @group.memberships.build(
-      :member_id    => params[:member][:id], 
-      :member_type  => params[:member][:type]
-    )
+    @member = params[:member][:type].constantize.find(params[:id])
+    
+    @group.add_member(@member)
     
     respond_to do |format|
       if @group.save

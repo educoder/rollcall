@@ -32,6 +32,7 @@ Rollcall::Application.routes.draw do
     collection do
       get :validate_token
       delete :invalidate_token
+      post :group, :action => 'create_group'
     end
   end
   get '/login' => 'sessions#new'
