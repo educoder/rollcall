@@ -16,4 +16,8 @@ class Account < ActiveRecord::Base
       Digest::SHA1.hexdigest(password)
     end
   end
+  
+  def self.random_password
+    rand(10e30).to_s(32)
+  end
 end
