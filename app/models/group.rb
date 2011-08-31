@@ -19,6 +19,11 @@ class Group < ActiveRecord::Base
     memberships.collect{|membership| membership.member}
   end
   
+  def add_member(member)
+    memberships.build(:member => member)
+  end
+  alias_method :<<, :add_member
+  
   def to_s
     name
   end
