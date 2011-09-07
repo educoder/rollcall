@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110615194755) do
+ActiveRecord::Schema.define(:version => 20110831160904) do
 
   create_table "accounts", :force => true do |t|
     t.string   "login"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(:version => 20110615194755) do
     t.datetime "updated_at"
     t.integer  "for_id"
     t.string   "for_type"
+    t.boolean  "allow_passwordless_login", :default => false, :null => false
   end
 
   add_index "accounts", ["for_id", "for_type"], :name => "index_accounts_on_for_id_and_for_type"
