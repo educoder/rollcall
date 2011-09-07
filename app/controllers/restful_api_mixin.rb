@@ -7,6 +7,7 @@ module RestfulApiMixin
     end
     respond_to do |format|
       format.xml { render :xml => error.to_xml, :status => status }
+      format.json { render :json => error.to_json, :status => status }
     end
   end
   
@@ -17,6 +18,8 @@ module RestfulApiMixin
   class RestfulError
     attr_reader :error
     attr_reader :type
+    
+    extend ActiveModel::Naming
     
     def initialize(error, type = nil)
       @error = error
