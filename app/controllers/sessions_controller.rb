@@ -72,7 +72,7 @@ class SessionsController < ApplicationController
       group_name = logins.join("-")
       Group.transaction do
         @group = Group.create(:name => group_name, :run => @run)
-        @group.create_account(:login => group_name, :password => Account.random_password)
+        @group.create_account(:login => group_name, :password => Account.random_password, :allow_passwordless_login => true)
         @for.each{|m| @group.add_member(m)}
         @group.save!
         group_created = true
