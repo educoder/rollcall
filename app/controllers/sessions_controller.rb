@@ -88,10 +88,16 @@ class SessionsController < ApplicationController
     if @session.save
       flash[:notice] = "#{@group.account.login.inspect} successfully #{group_created ? 'created and' : ''} logged in."
     else
-      flash[:error] = "Session NOT created because: "+@session.errors.full_messages.join("; ")
+      err_msg = "Session NOT created because: "+@session.errors.full_messages.join("; ")
+      @error = RestfulError.new err_msg, :not_found
+      flash[:error] = err_msg
     end
     
-    respond_with(@session, :include => :account)
+    if @error
+      respond_with(@error, :status => @error.type)
+    else
+      respond_with(@session, :include => {:account => {:methods => :encrypted_password, :except => :password}})
+    end
   end
   
   # GET /sessions/1
