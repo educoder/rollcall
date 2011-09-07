@@ -60,11 +60,7 @@ class SessionsController < ApplicationController
   def create_group
     logins = params[:logins]
     
-    begin
-      @run = Run.find(params[:run_id])
-    rescue ActiveRecord::RecordNotFound
-      render "Invalid run #{@run.inspect}!", :not_acceptable
-    end
+    @run = Run.find(params[:run_id])
     
     @for = Account.find(:all, :conditions => ['login IN (?)', logins], :include => :for).collect{|a| a.for}
     groups = Group.find(:all, :include => :memberships, :conditions => ['group_memberships.member_id IN (?)', @for.collect{|f| f.id}])
