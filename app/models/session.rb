@@ -18,7 +18,7 @@ class Session < ActiveRecord::Base
     
     if account.nil?
       errors[:login] << "is invalid."
-    elsif password.blank? || password != account.password
+    elsif !account.allow_passwordless_login? && (password.blank? || password != account.password)
       errors[:password] << "is invalid."
     end
   end
