@@ -64,7 +64,7 @@ class RunsController < ApplicationController
 
     respond_to do |format|
       if @run.save
-        format.html { redirect_to(@run, :notice => 'Run was successfully created.') }
+        format.html { redirect_to(runs_path, :notice => 'Run was successfully created.') }
         format.xml  { render :xml => @run, :status => :created, :location => @run }
         format.json  { render :json => @run, :status => :created, :location => @run }
       else
