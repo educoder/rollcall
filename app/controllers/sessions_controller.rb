@@ -3,7 +3,7 @@ class SessionsController < ApplicationController
 
   respond_to :html,
     :except => :validate_token
-  respond_to :xml, :json, 
+  respond_to :xml, :json, :html,
     :only => [:index, :create, :validate_token, :invalidate_token, :create_group]
   
   def index
