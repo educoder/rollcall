@@ -9,7 +9,9 @@
   </div>
 	<div class="field">
     <%= account_fields.label :password %><br />
-    <%= account_fields.text_field :password %>
+    <%= account_fields.text_field :password %><br />
+    
+    <%= account_fields.check_box :allow_passwordless_login %> <%= account_fields.label :allow_passwordless_login %>
   </div>
   
   <% unless account_fields.object.new_record? %>
