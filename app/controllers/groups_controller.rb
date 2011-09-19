@@ -20,12 +20,16 @@ class GroupsController < ApplicationController
   # GET /groups/1
   # GET /groups/1.xml
   # GET /groups/1.json
+  # GET /groups/awesome
+  # GET /groups/awesome.xml
+  # GET /groups/awesome.json
   def show
     id = params[:id]
     if id =~ /^\d+/
       @group = Group.find(id)
     else
-      @group = Group.find(:first, :conditions => {'accounts.login' => id}, :include => [:account, :groups])
+      #@group = Group.find(:first, :conditions => {'accounts.login' => id}, :include => [:account, :groups])
+      @group = Group.find(:first, :conditions => {'name' => id}, :include => [:account, :groups])
       unless @group
         raise ActiveRecord::RecordNotFound, "Group #{id.inspect} doesn't exist!"
       end
