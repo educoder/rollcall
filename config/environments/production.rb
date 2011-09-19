@@ -40,6 +40,11 @@ Rollcall::Application.configure do
   # Enable threaded mode
   # config.threadsafe!
 
+  # Enable full debugging output in production 
+  # (we need this since our "production" deployment right now needs lots of "quotes" around it)
+  config.consider_all_requests_local       = true
+  config.action_view.debug_rjs             = true
+
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation can not be found)
   config.i18n.fallbacks = true
