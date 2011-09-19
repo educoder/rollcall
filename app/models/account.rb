@@ -6,8 +6,8 @@ class Account < ActiveRecord::Base
   belongs_to :for, 
     :polymorphic => true
   
-  before_save :assign_random_password,
-    :if => proc{ password.blank? }
+  before_validation :assign_random_password,
+    :if => proc{ password.blank? && !login.blank? }
   
     
   # can't change login after creation because this acts as a
