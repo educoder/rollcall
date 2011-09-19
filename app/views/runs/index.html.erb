@@ -1,5 +1,5 @@
 <% if notice %>
-  <p id="notice"><%= notice %></p>
+  <%= show_flash %>
 <% end %>
 
 <h1>Listing runs</h1>
@@ -16,7 +16,7 @@
 <% @runs.each do |run| %>
   <tr>
     <td><%= run.name %></td>
-    <td><%= run.curnit_id %></td>
+    <td><%= run.curnit %></td>
     <td><%= link_to 'Show', run %></td>
     <td><%= link_to 'Edit', edit_run_path(run) %></td>
     <td><%= link_to 'Destroy', run, :confirm => 'Are you sure?', :method => :delete %></td>
