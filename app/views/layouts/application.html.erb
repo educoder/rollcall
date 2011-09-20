@@ -16,7 +16,7 @@
 <% if authenticated_as %>
     <div id="authenticated-as">
         <strong><%= authenticated_as.account.login %></strong> | 
-            <%= link_to "Log out", url_for(:controller => 'sessions', :id => session.id, :method => :destroy, :path_only => true) %>
+            <%= link_to "Log out", url_for(authenticated_session), :method => :delete %>
     </div>
 <% end %>
 

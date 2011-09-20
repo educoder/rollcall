@@ -113,9 +113,12 @@ class SessionsController < ApplicationController
   # DELETE /sessions/1.xml
   def destroy
     @session = Session.find(params[:id])
+    unauthenticate if @session == authenticated_session
     @session.destroy
 
-    respond_with(@session)
+    respond_with(@session) do |format|
+      format.html { redirect_to login_path, :notice => "#{@session.account.login} has been logged out." }
+    end
   end
   
   # GET /sessions/validate_token.xml?token=123abc456def

@@ -1,7 +1,6 @@
 class ApplicationController < ActionController::Base
   #protect_from_forgery
   layout 'application'
-  session :on
   
   # use the custom responder from RestfulJSONP to handle
   # JSONP requests
@@ -9,19 +8,23 @@ class ApplicationController < ActionController::Base
   
   protected
   def must_be_admin
-    unless authenticated_as && User.find(authenticated_as).is_admin?
+    unless authenticated_session && authenticated_as && authenticated_as.is_admin?
       redirect_to login_path(:destination => request.url), 
         :notice => "You must log in as an admin to access the requested area." #, :status => :unauthorized
     end
   end
   
   def authenticated_as
-    session[:auth_session_id] && authenticated_session.account.for
+    authenticated_session && authenticated_session.account && authenticated_session.account.for
   end
   helper_method :authenticated_as
   
   def authenticated_session
-    session[:auth_session_id] && Session.find(session[:auth_session_id])
+    begin
+      session[:auth_session_id] && Session.find(session[:auth_session_id]) 
+    rescue ActiveRecord::RecordNotFound 
+      return nil
+    end
   end
   helper_method :authenticated_session
   
@@ -31,5 +34,9 @@ class ApplicationController < ActionController::Base
     else
       raise "Only users can authenticate for rollcall administration. Current account is: #{sess.account.for.inspect}"
     end
+  end
+  
+  def unauthenticate
+    session.delete(:auth_session_id)
   end
 end
