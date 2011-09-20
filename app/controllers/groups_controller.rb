@@ -12,7 +12,6 @@ class GroupsController < ApplicationController
   def index
     @groups = find_groups_based_on_params
     
-    
     @groupables = Group.all + User.all
 
     respond_with(@groups,  :include => {:account => {:methods => :encrypted_password}}, :methods => :members)

@@ -6,7 +6,7 @@ class RunsController < ApplicationController
   # GET /runs.json
   def index
     if params[:curnit_id]
-      @runs = Curnit.find(params[:curnit_id]).runs
+      @runs = Curnit.find_by_name_or_id(params[:curnit_id]).runs
     else
       @runs = Run.all
     end
