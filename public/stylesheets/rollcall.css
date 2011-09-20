@@ -232,6 +232,10 @@ table > thead > tr > th {
   background-color: #770 !important;
 }
 
+*.ui-droppable.active {
+  background-color: #ab2;
+}
+
 a.link-back-to-list {
   margin-top: 1em;
   margin-bottom: 1em;

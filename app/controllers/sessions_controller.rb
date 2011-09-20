@@ -1,10 +1,10 @@
 class SessionsController < ApplicationController
   include RestfulApiMixin
-
+  
+  respond_to :xml, :json,
+    :only => [:index, :create, :validate_token, :invalidate_token, :create_group]
   respond_to :html,
     :except => :validate_token
-  respond_to :xml, :json, :html,
-    :only => [:index, :create, :validate_token, :invalidate_token, :create_group]
   
   def index
     @sessions = Session.all

@@ -4,11 +4,13 @@
     },
     $.fn.group = function() {
         $(this).droppable({
+            tolerance: 'pointer',
+            hoverClass: 'active',
             drop: function(ev, ui) {
                 if ($(ui.draggable).is('.groupable')) {
                     groupable = (ui.draggable)
                     $.ajax({
-                        url: '/groups/'+$(this).data('id')+'/add_member.xml',
+                        url: '/groups/'+$(this).data('id')+'/add_member',
                         type: 'put',
                         context: this,
                         data: {
@@ -21,22 +23,15 @@
                             $(this).effect('highlight')
                         },
                         success: function(data) {
-                            $.ajax({
-                                url: '/groups/'+$(this).data('id')+'/show_listing',
-                                type: 'get',
-                                context: this,
-                                success: function(data) {
-                                    updatedGroup = $(data)
-                                    updatedGroup.group() // make the replacement element a droppable
-                                    $(this).replaceWith(updatedGroup)
-                                }
-                            })
+                            updatedGroup = $(data)
+                            updatedGroup.group() // make the replacement element a droppable
+                            $(this).replaceWith(updatedGroup)
                         },
                         error: function(data) {
-                            alert("ERROR: \n  -"+
+                            alert("ERROR: \n  - "+
                                 $(data.responseXML).find('error').map(function(){
                                     return $(this).text()
-                                }).toArray().join("\n  -")
+                                }).toArray().join("\n  - ")
                             )
                         }
                     })

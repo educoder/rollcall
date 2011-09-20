@@ -101,6 +101,7 @@ class GroupsController < ApplicationController
     respond_with(@group,  :include => {:account => {:methods => :encrypted_password}})
   end
   
+  # PUT /groups/1/add_member
   # PUT /groups/1/add_member.xml
   # PUT /groups/1/add_member.json
   def add_member
@@ -112,6 +113,7 @@ class GroupsController < ApplicationController
     
     respond_to do |format|
       if @group.save
+        format.html { render :partial => 'listing', :locals => {:group => @group} }
         format.xml  { render :xml => @group.to_xml(:methods => :members), :status => :created, :location => @group }
         format.json { render :json => @group.to_json(:methods => :members), :status => :created, :location => @group }
       else
@@ -136,6 +138,7 @@ class GroupsController < ApplicationController
     
     respond_to do |format|
       if @group.save
+        format.html { render :partial => 'listing', :locals => {:group => @group} }
         format.xml  { render :xml => @group.to_xml(:methods => :members), :status => :ok, :location => @group }
         format.json { render :json => @group.to_json(:methods => :members), :status => :ok, :location => @group }
       else
