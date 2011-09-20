@@ -2,7 +2,8 @@ module AccountMixin
   def self.included(target)
     target.class_eval do
       has_one :account, :autosave => true,
-        :class_name => "#{self}Account", :as => :for
+        :class_name => "#{self}Account", :as => :for,
+        :dependent => :destroy
       
       delegate :login, :to => :account
       delegate :password, :to => :account

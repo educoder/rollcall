@@ -29,7 +29,7 @@ class ApplicationController < ActionController::Base
     if sess.account.for.kind_of?(User)
       session[:auth_session_id] = sess.id
     else
-      raise "Only users can authenticate for rollcall administration."
+      raise "Only users can authenticate for rollcall administration. Current account is: #{sess.account.inspect}"
     end
   end
 end
