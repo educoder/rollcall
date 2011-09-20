@@ -13,6 +13,17 @@
 <body>
 <h1 id="nameplate">Rollcall</h1>
 
+<%
+  @menu = ['users', 'groups', 'runs', 'curnits']
+%>
+<ul id="menu">
+    <%=raw(@menu.collect { |m| 
+        content_tag("li", :class => params[:controller] == m ? "active" : "") {
+            link_to(m.capitalize, url_for(:controller => m))
+        } 
+    }) %>
+</ul>
+
 <%= yield %>
 
 </body>

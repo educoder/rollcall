@@ -31,6 +31,57 @@ h1#nameplate {
   padding: 0 8px 0 8px;
 }
 
+#menu {
+  position: absolute;
+  right: 8px;
+  top: 9px;
+  
+  display: box;
+  display: -moz-box;
+  display: -webkit-box;
+  
+  -moz-box-orient: horizontal;
+  -webkit-box-orient: horizontal;
+}
+
+#menu li {
+  text-align: center;
+  /*min-width: 60px;*/
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-bottom: 3px;
+  padding-top: 3px;
+  
+  background-color: #450;
+  
+  display: box;
+  display: -moz-box;
+  display: -webkit-box;
+  
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  
+  -webkit-box-pack: center;
+	-moz-box-pack: center;
+	box-pack: center;
+}
+
+#menu li.active {
+  background-color: #670;
+}
+
+#menu li a {
+  display: block;
+  text-align: center;
+  width: 100%;
+  color: white;
+}
+
+#menu li:hover {
+  background-color: #670;
+}
+
 h1 {
   margin-top: 8px;
 }
