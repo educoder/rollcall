@@ -2,10 +2,12 @@
 <%= link_to 'New User', new_user_path %>
 </div>
 
+<%= show_flash %>
+
 <h1>Users</h1>
 
 
-<div class="list" style="left: 24px; right: 50%; position: absolute; margin-right: 12px">
+<div class="list">
 <% @users.each do |user| %>
   <%= render(:partial => 'listing', :locals => {:user => user}) %>
 <% end %>

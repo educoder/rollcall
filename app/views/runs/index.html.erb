@@ -1,29 +1,14 @@
-<% if notice %>
-  <%= show_flash %>
-<% end %>
-
-<h1>Listing runs</h1>
-
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Curnit</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @runs.each do |run| %>
-  <tr>
-    <td><%= run.name %></td>
-    <td><%= run.curnit %></td>
-    <td><%= link_to 'Show', run %></td>
-    <td><%= link_to 'Edit', edit_run_path(run) %></td>
-    <td><%= link_to 'Destroy', run, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
+<div class="list-actions">
 <%= link_to 'New Run', new_run_path %>
+</div>
+
+<%= show_flash %>
+
+<h1>Runs</h1>
+
+<div class="list">
+<% @runs.each do |run| %>
+  <%= render(:partial => 'listing', :locals => {:run => run}) %>
+<% end %>
+</div>
+
