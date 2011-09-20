@@ -93,6 +93,15 @@ h1 {
   margin-top: 8px;
 }
 
+input[type=submit] {
+  font-weight: bold;
+}
+
+input[type=submit].delete {
+  color: #c00;
+  font-weight: normal;
+}
+
 fieldset {
   border: 2px dotted #445500;
   margin-bottom: 1em;

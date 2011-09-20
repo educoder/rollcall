@@ -42,6 +42,10 @@
 }(jQuery))
 
 $(document).ready(function() {
+    $('input[type=submit], input[type=button], input[type=reset]').button()
+    $('button[type=submit]').button({icons: {primary: 'ui-icon-check'}})
+    
+    
     $('.groupable').groupable()
     $('.group').group()
     
