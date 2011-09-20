@@ -17,8 +17,11 @@ class CurnitsController < ApplicationController
   # GET /curnits/1
   # GET /curnits/1.xml
   # GET /curnits/1.json
+  # GET /curnits/WallCology
+  # GET /curnits/WallCology.xml
+  # GET /curnits/WallCology.json
   def show
-    @curnit = Curnit.find(params[:id])
+    @curnit = Curnit.find_by_name_or_id(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb

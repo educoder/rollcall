@@ -5,6 +5,7 @@ class Run < ActiveRecord::Base
     :autosave => true, :dependent => :destroy
   
   include MetadataAccessorMixin
+  include IdentifiableByNameMixin
   
   validates_presence_of :curnit_id
   validates_uniqueness_of :name

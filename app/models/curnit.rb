@@ -4,6 +4,9 @@ class Curnit < ActiveRecord::Base
     :autosave => true, :dependent => :destroy
   
   include MetadataAccessorMixin
+  include IdentifiableByNameMixin
+  
+  validates_uniqueness_of :name
   
   def to_s
     "#{name}"
