@@ -1,3 +1,5 @@
+<%= show_flash %>
+
 <%= form_for(@session, :html => {:id => 'login'}) do |f| %>
   <% if @session.errors.any? %>
     <div id="error_explanation">

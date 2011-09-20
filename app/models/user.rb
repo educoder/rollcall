@@ -18,6 +18,9 @@ class User < ActiveRecord::Base
     unless !account || account.valid?
       self.errors[:base] << "Account could not be #{account.new_record? ? "created" : "updated"}."
     end
+    if account && account.allow_passwordless_login && is_admin?
+      self.errors[:allow_passwordless_login] << "is not permitted for admin accounts."
+    end
   end
 
   def to_s
@@ -27,6 +30,10 @@ class User < ActiveRecord::Base
   # stub to make openfire happy (openfire users need an email address)
   def email
     "#{login}@encorelab.org"
+  end
+  
+  def is_admin?
+    kind == 'Admin'
   end
 
 end

@@ -36,7 +36,7 @@ Rollcall::Application.routes.draw do
       post :group, :action => 'create_group'
     end
   end
-  get '/login' => 'sessions#new'
+  get '/login' => 'sessions#new', :as => :login
   post '/login.:format' => 'sessions#create', 
     :defaults => { :format => 'xml' }
   get '/login/validate_token/:token(.:format)' => 'sessions#validate_token',

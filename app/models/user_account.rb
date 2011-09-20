@@ -1,2 +1,3 @@
 class UserAccount < Account
+
 end

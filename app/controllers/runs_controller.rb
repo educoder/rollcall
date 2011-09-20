@@ -1,4 +1,6 @@
 class RunsController < ApplicationController
+  before_filter :must_be_admin, :only => [:index, :new, :edit]
+  
   # GET /runs
   # GET /runs.xml
   # GET /runs.json

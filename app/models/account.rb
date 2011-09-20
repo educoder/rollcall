@@ -29,4 +29,8 @@ class Account < ActiveRecord::Base
   def self.random_password
     rand(10e30).to_s(32)
   end
+  
+  def to_s
+    login
+  end
 end

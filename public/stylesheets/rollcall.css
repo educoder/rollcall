@@ -33,7 +33,7 @@ h1#nameplate {
 
 #menu {
   position: absolute;
-  right: 8px;
+  right: 9px;
   top: 9px;
   
   display: box;
@@ -80,6 +80,13 @@ h1#nameplate {
 
 #menu li:hover {
   background-color: #670;
+}
+
+#authenticated-as {
+  position: absolute;
+  right: 8px;
+  top: 2px;
+  font-size: 11px;
 }
 
 h1 {
