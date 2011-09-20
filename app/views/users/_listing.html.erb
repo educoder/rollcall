@@ -1,4 +1,4 @@
 <div id="<%= dom_id(user) %>" class="user listing">
-	<span class="summary"><%= user.display_name %></span>
+	<span class="summary"><%= user.display_name %> | <%= user.kind %></span>
 	<h3><%= user.login %> <%= link_to_edit(user) %></h3>
 </div>
