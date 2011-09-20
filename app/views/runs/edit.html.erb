@@ -1,5 +1,6 @@
 <h1>Editing run</h1>
 
+<%= button_to("Delete Run", run_path(@run), :method => :delete, :style => 'margin-bottom: 1em', :class => 'delete', :confirm => "Delete run #{@run}?") %>
 <%= render 'form' %>
 
 <%= link_to 'Show', @run %> |

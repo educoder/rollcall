@@ -1,5 +1,6 @@
 <h1>Editing curnit</h1>
 
+<%= button_to("Delete Curnit", curnit_path(@curnit), :method => :delete, :style => 'margin-bottom: 1em', :class => 'delete', :confirm => "Delete curnit #{@curnit}?") %>
 <%= render 'form' %>
 
 <%= link_to 'Show', @curnit %> |

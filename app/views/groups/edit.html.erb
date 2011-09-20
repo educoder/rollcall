@@ -4,6 +4,7 @@
 
 <%= link_back_to_list %>
 
+<%= button_to("Delete Group", group_path(@group), :method => :delete, :style => 'margin-bottom: 1em', :class => 'delete', :confirm => "Delete group #{@group}?") %>
 <%= render 'form' %>
 
 <%= link_back_to_list %>
