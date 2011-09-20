@@ -26,7 +26,9 @@
                                 type: 'get',
                                 context: this,
                                 success: function(data) {
-                                    $(this).replaceWith(data).group()
+                                    updatedGroup = $(data)
+                                    updatedGroup.group() // make the replacement element a droppable
+                                    $(this).replaceWith(updatedGroup)
                                 }
                             })
                         },
@@ -48,4 +50,13 @@
 $(document).ready(function() {
     $('.groupable').groupable()
     $('.group').group()
+    
+    
+    $('.edit_group .groupables li .delete')
+        .bind('ajax:beforeSend', function() {
+            $(this).parent().addClass('deleted')
+        })
+        .bind('ajax:success', function() {
+            $(this).parent().hide('fade', {}, 'fast')
+        })
 })

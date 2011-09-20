@@ -98,6 +98,10 @@ ul.groupables li span.class {
   padding-right: 4px;
 }
 
+.edit_group ul.groupables li {
+  width: 50%;
+}
+
 
 div.sidebox {
   border: 4px dashed #670;
@@ -157,6 +161,13 @@ table > thead > tr > th {
   padding-right: 4px;
 }
 
+*.deleted {
+  opacity: 0.4;
+}
+
+*.active {
+  background-color: #cd5;
+}
 
 *.ui-draggable {
   cursor: move;
