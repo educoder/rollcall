@@ -20,6 +20,7 @@ Rollcall::Application.routes.draw do
     member do
       put :add_member
       put :remove_member
+      get :show_listing
     end
     collection do
       put :add_member_to_random

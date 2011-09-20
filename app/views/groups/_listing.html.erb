@@ -1,4 +1,4 @@
-<div id="<%= dom_id(group) %>" class="group listing">
+<div id="<%= dom_id(group) %>" class="group listing" data-id="<%= group.id %>">
 	<span class="summary"><%= group.members.count %> members</span>
 	<h3><%= group.name %> <%= link_to_edit(group) %></h3>
 	<ul class="groupables" style="display: none">

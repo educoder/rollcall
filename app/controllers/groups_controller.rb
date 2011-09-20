@@ -37,6 +37,12 @@ class GroupsController < ApplicationController
     
     respond_with(@group,  :include => {:account => {:methods => :encrypted_password}}, :methods => :members)
   end
+  
+  # GET /groups/1/show_listing
+  def show_listing
+    @group = Group.find(params[:id])
+    render :partial => 'listing', :locals => {:group => @group}
+  end
 
   # GET /groups/new
   # GET /groups/new.xml
@@ -100,7 +106,7 @@ class GroupsController < ApplicationController
   def add_member
     @group = Group.find(params[:id])
     
-    @member = params[:member][:type].constantize.find(params[:id])
+    @member = params[:member][:type].constantize.find(params[:member][:id])
     
     @group.add_member(@member)
     

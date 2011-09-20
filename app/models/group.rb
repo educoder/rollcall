@@ -14,6 +14,7 @@ class Group < ActiveRecord::Base
   include AccountMixin
   
   validates_presence_of :run_id
+  validate :check_for_member_self
   
   def members
     memberships.collect{|membership| membership.member}
@@ -26,5 +27,13 @@ class Group < ActiveRecord::Base
   
   def to_s
     name
+  end
+  
+  def check_for_member_self
+    memberships.each do |membership|
+      if membership.member == self
+        errors.add(:memberships, "cannot contain the group itself")
+      end
+    end
   end
 end
