@@ -28,7 +28,7 @@
 	</div>
 	
 	<fieldset>
-    <legend>Members</legend>
+    <legend>Members <span class="total">(<%= @group.memberships.count %> total)</span></legend>
     <ul class="groupables">
       <% @group.memberships.each do |membership| %>
         <li>
