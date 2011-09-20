@@ -8,7 +8,9 @@ module AccountMixin
       delegate :password, :to => :account
       delegate :encrypted_password, :to => :account
       
-      accepts_nested_attributes_for :account, :allow_destroy => true
+      accepts_nested_attributes_for :account,
+        :reject_if => proc{|attributes| attributes['login'].blank? && attributes['password'].blank?},
+        :allow_destroy => true
       
       after_validation do
         # fix weird error messages caused by :autosave => true combined with errors.full_messages

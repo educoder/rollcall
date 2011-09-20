@@ -10,6 +10,7 @@
       <%= f.fields_for :account do |af| %>
         <%= af.hidden_field("_destroy", :value => false) %>
       <% end %>
+      <%= hidden_field_tag("has_account", "0", :id => 'hasnt_account') %> 
       <%= check_box_tag("has_account", "1", @group.account && !@group.account.new_record?) %> 
       <%= label_tag("has_account", "Has Account") %>
     </legend>
@@ -48,19 +49,3 @@
   </div>
   
 <% end %>
-
-<%= javascript_tag %{
-  $(document).ready(function() {
-    $('#account').#{@group.account && !@group.account.new_record? ? 'show' : 'hide'}()
-  })
-  
-  $('#has_account').click(function() {
-    if ($(this).is(':checked')) {
-      $('#account').show()
-      $('#group_account_attributes__destroy').val(false)
-    } else {
-      $('#account').hide()
-      $('#group_account_attributes__destroy').val(true)
-    }
-  })
-} %>

@@ -46,7 +46,6 @@
     }
 }(jQuery))
 
-
 $(document).ready(function() {
     $('.groupable').groupable()
     $('.group').group()
@@ -59,4 +58,18 @@ $(document).ready(function() {
         .bind('ajax:success', function() {
             $(this).parent().hide('fade', {}, 'fast')
         })
+        
+    checkHasAccount = function() {
+        if ($('#has_account').is(':checked')) {
+            $('#account').show()
+            $('#group_account_attributes__destroy').val(false)
+        } else {
+            $('#account').hide()
+            $('#group_account_attributes__destroy').val(true)
+        }
+    }
+
+    $('#has_account').click(checkHasAccount)
+    checkHasAccount()
+        
 })
