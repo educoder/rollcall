@@ -1,5 +1,7 @@
 class CurnitsController < ApplicationController
-  before_filter :must_be_admin, :only => [:index, :new, :edit]
+  before_filter(:only => [:index, :new, :edit, :create, :update, :destroy]) do |controller|
+    must_be_admin if controller.request.format.html?
+  end
   
   # GET /curnits
   # GET /curnits.xml

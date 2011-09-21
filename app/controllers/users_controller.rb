@@ -2,7 +2,9 @@ class UsersController < ApplicationController
   include RestfulApiMixin
   
   before_filter AccountParamsFilter
-  before_filter :must_be_admin, :only => [:index, :new, :edit]
+  before_filter(:only => [:index, :new, :edit, :create, :update, :destroy]) do |controller|
+    must_be_admin if controller.request.format.html?
+  end
   
   respond_to :html, :xml, :json
   
