@@ -160,7 +160,7 @@ class SessionsController < ApplicationController
     end
     
     if @error
-      respond_with(@error, :status => @error.type)
+      render_error(@error)
     else
       respond_with(@session)
     end

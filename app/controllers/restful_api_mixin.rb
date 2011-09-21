@@ -1,9 +1,11 @@
 module RestfulApiMixin
   def render_error(error)
     status = :internal_server_error
-    unless error.is_a?(RestfulError)
+    if error.is_a?(RestfulError)
+      status = error.type
+    else
       status = Rack::Utils.status_code(ActionDispatch::ShowExceptions.rescue_responses[error.class.name])
-      error = RestfulError.new(error)
+      error = RestfulError.new(error, status)
     end
     respond_to do |format|
       format.xml { render :xml => error.to_xml, :status => status }
