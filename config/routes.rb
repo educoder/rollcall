@@ -41,6 +41,8 @@ Rollcall::Application.routes.draw do
     :defaults => { :format => 'xml' }
   get '/login/validate_token/:token(.:format)' => 'sessions#validate_token',
     :defaults => { :format => 'xml' }
+    
+  root :to => "users#index"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
