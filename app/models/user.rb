@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  KINDS = ['Student', 'Instructor', 'Admin']
+  KINDS = ['Student', 'Instructor', 'Admin', 'Agent']
   
   has_many :group_memberships, :as => :member,
     :autosave => true, :dependent => :destroy
