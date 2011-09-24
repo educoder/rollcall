@@ -19,7 +19,7 @@ class UsersController < ApplicationController
       @users = User.all
     end
 
-    respond_with(@users,  :include => {:account => {:methods => :encrypted_password}})
+    respond_with(@users,  :include => {:account => {:except => :password, :methods => :encrypted_password}})
   end
 
   # GET /users/1
@@ -39,7 +39,7 @@ class UsersController < ApplicationController
       end
     end
 
-    respond_with(@user,  :include => {:groups => {}, :account => {:methods => :encrypted_password}})
+    respond_with(@user,  :include => {:groups => {}, :account => {:except => :password, :methods => :encrypted_password}})
   end
 
   # GET /users/new
@@ -65,7 +65,7 @@ class UsersController < ApplicationController
     else
       flash[:error] = 'User was NOT created'
     end
-    respond_with(@user,  :include => {:account => {:methods => :encrypted_password}})
+    respond_with(@user,  :include => {:account => {:except => :password, :methods => :encrypted_password}})
   end
 
   # PUT /users/1
@@ -76,7 +76,7 @@ class UsersController < ApplicationController
     
     @user = User.find(params[:id])
     flash[:notice] = 'User was successfully updated' if @user.update_attributes(params[:user])
-    respond_with(@user,  :include => {:account => {:methods => :encrypted_password}})
+    respond_with(@user,  :include => {:account => {:except => :password, :methods => :encrypted_password}})
   end
 
   # DELETE /users/1
