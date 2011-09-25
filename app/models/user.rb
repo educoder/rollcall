@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   has_many :groups, :through => :group_memberships
     
   validates_presence_of :kind
-  validates_format_of :kind, :with => /^Student|Instructor|Admin$/,
+  validates_format_of :kind, :with => /^#{KINDS.join("|")}$/,
     :message => "must be #{KINDS.join(",")}"
   
   include MetadataAccessorMixin
