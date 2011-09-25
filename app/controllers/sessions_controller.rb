@@ -70,6 +70,7 @@ class SessionsController < ApplicationController
       # TODO: figure out what to do if for some reason we return multiple matching groups
     
     group_created = false
+    
     unless @group
       group_name = logins.join("-")
       Group.transaction do
@@ -79,6 +80,12 @@ class SessionsController < ApplicationController
         @group.save!
         group_created = true
       end
+    end
+    
+    unless @group.account
+      @error = RestfulError.new "Group account was not retrieved or created!\n #{@group.errors.full_messages.join("; ")}", :server_error
+      render_error(@error)
+      return
     end
     
     @session = Session.new(:account => @group.account)
