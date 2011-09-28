@@ -7,12 +7,13 @@ class Account < ActiveRecord::Base
     :polymorphic => true
   
   before_validation :assign_random_password,
-    :if => proc{ password.blank? && allow_passwordless_login && !login.blank? }
-  
+    :if => proc{ allow_passwordless_login? && password.blank? && !login.blank? }
+    # if account allows for passwordless login and the password is blank (but don't do it if we have no login for some reason)
     
-  # can't change login after creation because this acts as a
-  # link to corresponding accounts in external services (XMPP, etc).
-  attr_readonly :login
+  validates_uniqueness_of :login
+  validates_presence_of :for_id
+  
+  validate :cannot_change_login, :on => :update
   
   def encrypted_password
     if password.blank?
@@ -32,5 +33,12 @@ class Account < ActiveRecord::Base
   
   def to_s
     login
+  end
+  
+  protected
+  def cannot_change_login
+    if changed.include? 'login'
+      errors.add(:login, "cannot be changed once the account has been created.")
+    end
   end
 end

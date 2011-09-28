@@ -4,6 +4,9 @@ module AccountMixin
       has_one :account, :autosave => true,
         :class_name => "#{self}Account", :as => :for,
         :dependent => :destroy
+        
+      # cannot change account once the User/Group/etc has been created
+      attr_readonly :account
       
       delegate :login, :to => :account
       delegate :password, :to => :account
@@ -11,7 +14,9 @@ module AccountMixin
       
       accepts_nested_attributes_for :account,
         :reject_if => proc{|attributes| attributes['login'].blank? && attributes['password'].blank?},
-        :allow_destroy => true
+        :allow_destroy => true, :update_only => true
+        
+      validates_associated :account
       
       after_validation do
         # fix weird error messages caused by :autosave => true combined with errors.full_messages
