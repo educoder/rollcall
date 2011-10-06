@@ -13,8 +13,8 @@ class UsersController < ApplicationController
   # GET /users.json
   def index
     if params[:run_id]
-      @users = User.find(:all, :include => [:groups, :account],
-        :conditions => ['groups.run_id = ?', params[:run_id]])
+      @users = User.find(:all, :include => [{:groups => :run}, :account],
+        :conditions => ['runs.id = ? OR runs.name = ?', params[:run_id], params[:run_id]])
     else
       @users = User.find(:all, :include => [:groups, :account])
     end
