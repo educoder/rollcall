@@ -13,10 +13,10 @@ class UsersController < ApplicationController
   # GET /users.json
   def index
     if params[:run_id]
-      @users = User.find(:all, :include => :groups,
+      @users = User.find(:all, :include => [:groups, :account],
         :conditions => ['groups.run_id = ?', params[:run_id]])
     else
-      @users = User.all
+      @users = User.find(:all, :include => [:groups, :account])
     end
 
     respond_with(@users,  :include => {:account => {:except => :password, :methods => :encrypted_password}})
