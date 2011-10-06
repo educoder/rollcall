@@ -4,6 +4,9 @@ class Group < ActiveRecord::Base
   # for items belonging to this group
   has_many :memberships, :class_name => GroupMembership.name, 
     :autosave => true, :dependent => :destroy
+  # doesn't work... throws a ActiveRecord::HasManyThroughAssociationPolymorphicError
+  # ... had to implement as regular method (see blow)
+  #has_many :members, :through => :memberships
     
   # for groups (supergroups) that this group belongs to
   has_many :group_memberships, :as => :member,
@@ -18,7 +21,10 @@ class Group < ActiveRecord::Base
   validate :check_for_member_self
   
   def members
-    memberships.collect{|membership| membership.member}
+    # the (true) forces memberships to be reloaded... necessary because
+    # only a subset of memberships may be loaded if membership_id is used
+    # as a constraint in a condition
+    memberships(true).collect{|membership| membership.member}
   end
   
   def add_member(member)
