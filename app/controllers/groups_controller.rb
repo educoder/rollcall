@@ -14,7 +14,9 @@ class GroupsController < ApplicationController
   def index
     @groups = find_groups_based_on_params
     
-    @groupables = Group.all + User.all
+    if params[:format] == 'html'
+      @groupables = Group.all + User.all
+    end
 
     respond_with(@groups,  :include => {:account => {:methods => :encrypted_password}}, :methods => :members)
   end
@@ -192,9 +194,10 @@ class GroupsController < ApplicationController
     if params[:ids]
       groups = Group.find(params[:ids])
     elsif params[:user_id]
-      #TODO: check that this actually works!
+      user = User.find_by_name_or_id(params[:user_id])
+      
       groups = Group.find(:all, :include => :memberships, 
-        :conditions => {'group_memberships' => {'member_id' => params[:user_id],  'member_type' => User.name}}.merge(constr)
+        :conditions => {'group_memberships' => {'member_id' => user.id,  'member_type' => User.name}}.merge(constr)
       )
     elsif params[:group_id]
       #TODO: check that this actually works!
