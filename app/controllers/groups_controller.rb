@@ -14,10 +14,6 @@ class GroupsController < ApplicationController
   def index
     @groups = find_groups_based_on_params
     
-    if params[:format] == 'html'
-      @groupables = Group.all + User.all
-    end
-
     respond_with(@groups,  :include => {:account => {:methods => :encrypted_password}}, :methods => :members)
   end
 

@@ -7,9 +7,12 @@ class RunsController < ApplicationController
   # GET /runs.xml
   # GET /runs.json
   def index
-    if params[:curnit_id]
+    if params[:user_id]
+      user = User.find(params[:user_id])
+      @runs = user.groups.collect{|g| g.run}.uniq
+    elsif params[:curnit_id]
       @runs = Curnit.find_by_name_or_id(params[:curnit_id]).runs
-    else
+    else params[:run_id]
       @runs = Run.all
     end
 

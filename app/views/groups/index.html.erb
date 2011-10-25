@@ -14,7 +14,7 @@
 <h2 style="right: 24px; left: 50%; position: absolute; margin: 0; margin-left: 12px; background-color: #670; padding: 8px">Groupable Items</h2>
 <div class="sidebox" style="right: 24px; left: 50%; position: absolute; margin-left: 12px; margin-top: 37px">
 	<ul class="groupables">
-		<% @groupables.each do |groupable| %>
+		<% (Group.all + User.all).each do |groupable| %>
 			<%= render(:partial => 'groupable', :locals => {:groupable => groupable}) %>
 		<% end %>
 	</ul>

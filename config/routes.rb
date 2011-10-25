@@ -14,6 +14,7 @@ Rollcall::Application.routes.draw do
   resources :users do
     resources :metadata
     resources :groups
+    resources :runs
   end
   
   resources :groups do
