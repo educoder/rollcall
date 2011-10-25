@@ -29,15 +29,7 @@ class UsersController < ApplicationController
   # GET /users/mzukowski.xml
   # GET /users/mzukowski.json
   def show
-    id = params[:id]
-    if id =~ /^\d+/
-      @user = User.find(id)
-    else
-      @user = User.find(:first, :conditions => {'accounts.login' => id}, :include => [:account, :groups])
-      unless @user
-        raise ActiveRecord::RecordNotFound, "User #{id.inspect} doesn't exist!"
-      end
-    end
+    @user = User.find_by_login_or_id(params[:id])
 
     respond_with(@user,  :include => {:groups => {}, :account => {:except => :password, :methods => :encrypted_password}})
   end

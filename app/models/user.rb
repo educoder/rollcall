@@ -11,7 +11,6 @@ class User < ActiveRecord::Base
   
   include MetadataAccessorMixin
   include AccountMixin
-  include IdentifiableByNameMixin
   
   validates :account, :presence => true
   
@@ -35,6 +34,15 @@ class User < ActiveRecord::Base
   
   def is_admin?
     kind == 'Admin'
+  end
+  
+  def self.find_by_login_or_id(name_or_id)
+    if name_or_id =~ /^\d+/
+      find(name_or_id)
+    else
+      find(:first, :conditions => {'accounts.login' => name_or_id}, :include => [:account, :groups]) or
+        raise ActiveRecord::RecordNotFound, "#{self} #{name_or_id.inspect} doesn't exist!"
+    end
   end
 
 end
