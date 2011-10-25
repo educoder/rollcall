@@ -194,7 +194,7 @@ class GroupsController < ApplicationController
     if params[:ids]
       groups = Group.find(params[:ids])
     elsif params[:user_id]
-      user = User.find_by_name_or_id(params[:user_id])
+      user = User.find_by_login_or_id(params[:user_id])
       
       groups = Group.find(:all, :include => :memberships, 
         :conditions => {'group_memberships' => {'member_id' => user.id,  'member_type' => User.name}}.merge(constr)
