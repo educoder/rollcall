@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
   
   include MetadataAccessorMixin
   include AccountMixin
+  include IdentifiableByNameMixin
   
   validates :account, :presence => true
   
