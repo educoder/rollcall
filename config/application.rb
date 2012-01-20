@@ -38,5 +38,9 @@ module Rollcall
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password, :token]
+    
+    # You can override this in your environments/*.rb files
+    config.restful_api_username = "rollcall"
+    config.restful_api_password = "rollcall!"
   end
 end

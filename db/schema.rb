@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110831160904) do
+ActiveRecord::Schema.define(:version => 20120112221435) do
 
   create_table "accounts", :force => true do |t|
     t.string   "login"
@@ -86,6 +86,11 @@ ActiveRecord::Schema.define(:version => 20110831160904) do
   add_index "sessions", ["account_id"], :name => "index_sessions_on_user_id"
   add_index "sessions", ["token", "account_id"], :name => "index_sessions_on_token_and_user_id"
   add_index "sessions", ["token"], :name => "index_sessions_on_token"
+
+  create_table "system_settings", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", :force => true do |t|
     t.string   "display_name"

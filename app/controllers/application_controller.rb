@@ -39,4 +39,9 @@ class ApplicationController < ActionController::Base
   def unauthenticate
     session.delete(:auth_session_id)
   end
+  
+  protected
+  def system_is_initialized?
+    User.count > 0
+  end
 end

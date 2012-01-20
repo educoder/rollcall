@@ -1,0 +1,17 @@
+<div class="list-actions">
+<%= link_to '+ Add User', new_user_path %>
+</div>
+
+<%= show_flash %>
+
+<h1>Setup Complete</h1>
+
+<p class="notice">
+  Admin account created.
+</p>
+
+<p>You should now be able to log in to your Rollcall system. You may need to install additional plugins 
+  such as rollcall-ejabberd and make changes to the <tt>config/envoronments/production.rb</tt> file to 
+  integrate with your XMPP server.</p>
+  
+<p><%= link_to("Continue »", :controller => 'users') %></p>

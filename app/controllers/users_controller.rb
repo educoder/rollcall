@@ -3,7 +3,9 @@ class UsersController < ApplicationController
   
   before_filter AccountParamsFilter
   before_filter(:only => [:index, :new, :edit, :create, :update, :destroy]) do |controller|
-    must_be_admin if controller.request.format.html?
+    if controller.request.format.html? && system_is_initialized?
+      must_be_admin 
+    end
   end
   
   respond_to :html, :xml, :json
@@ -12,6 +14,11 @@ class UsersController < ApplicationController
   # GET /users.xml
   # GET /users.json
   def index
+    unless system_is_initialized?
+      redirect_to setup_path
+      return
+    end
+    
     if params[:run_id]
       @users = User.find(:all, :include => [{:groups => :run}, :account],
         :conditions => ['runs.id = ? OR runs.name = ?', params[:run_id], params[:run_id]])

@@ -23,6 +23,7 @@ Rollcall::Application.configure do
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
 
-  #config.ejabberd.mod_rest_url = "http://localhost:5285/rest"
+  #config.ejabberd.domain = "glint"
+  config.ejabberd.domain = "proto.encorelab.org"
 end
 

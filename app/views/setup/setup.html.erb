@@ -1,0 +1,27 @@
+<div class="list-actions">
+<%= link_to '+ Add User', new_user_path %>
+</div>
+
+<%= show_flash %>
+
+<h1>Initial System Setup</h1>
+
+<%= form_for :setup do |f| %>
+  <fieldset>
+    <legend>Admin Credentials</legend>
+    <p class="notice">Set up credentials for the admin account. You'll be able to create additional admin accounts later.</p>
+    <%= fields_for :admin do |af| %>
+      <% if @admin.errors.any? %>
+        <%= af.error_messages(:message => "",
+          :header_message => "The #{@admin.class.name} couldn't be created because:") %>
+      <% end %>
+    
+      <div class="field">
+        <%= label_tag :admin_login, "Login" %> <%= af.text_field :login %>
+    		<%= label_tag :admin_password, "Password" %> <%= af.text_field :password %>
+      </div>
+    <% end %>
+  </fieldset>
+  
+  <%= submit_tag "Submit" %>
+<% end %>

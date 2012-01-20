@@ -18,9 +18,22 @@ a:hover {
   color: #b24;
 }
 
+legend {
+  font-weight: bold;
+}
+
+p {
+  margin-top: 0;
+}
+
+p.hint {
+  opacity: 0.5;
+}
+
 *.clickable {
   cursor: pointer;
 }
+
 
 h1#nameplate {
   color: white;
@@ -214,7 +227,7 @@ strong.highlight {
   width: 100%;
 }*/
 
-#notice {
+#notice, .notice {
   background-color: #efb;
   color: #560;
   font-weight: bold;

@@ -1,4 +1,7 @@
 module RestfulApiMixin
+  API_USERNAME = Rails.application.config.restful_api_username
+  API_PASSWORD = Rails.application.config.restful_api_password
+  
   def render_error(error)
     status = :internal_server_error
     if error.is_a?(RestfulError)
@@ -15,6 +18,7 @@ module RestfulApiMixin
   
   def self.included(controller)
     controller.rescue_from ActiveRecord::RecordNotFound, :with => :render_error
+    controller.before_filter :api_auth
   end
   
   class RestfulError
@@ -72,6 +76,15 @@ module RestfulApiMixin
         json[:type] = @error.class
       else
         json[:message] = @error.inspect
+      end
+    end
+  end
+  
+  protected
+  def api_auth
+    if request.format.xml? || request.format.json?
+      authenticate_or_request_with_http_basic do |username, password|
+        username == API_USERNAME && password = API_PASSWORD
       end
     end
   end

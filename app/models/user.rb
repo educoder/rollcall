@@ -27,6 +27,10 @@ class User < ActiveRecord::Base
     "#{display_name} (#{login})"
   end
 
+  def username
+    account.login
+  end
+
   # stub to make openfire happy (openfire users need an email address)
   def email
     "#{login}@encorelab.org"

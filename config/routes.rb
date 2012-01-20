@@ -1,5 +1,7 @@
 Rollcall::Application.routes.draw do
 
+  resources :system_settings
+
   resources :curnits do
     resources :metadata
     resources :runs
@@ -42,7 +44,9 @@ Rollcall::Application.routes.draw do
     :defaults => { :format => 'xml' }
   get '/login/validate_token/:token(.:format)' => 'sessions#validate_token',
     :defaults => { :format => 'xml' }
-    
+  
+  match 'setup' => 'setup#index', :as => :setup
+  
   root :to => "users#index"
 
   # The priority is based upon order of creation:
