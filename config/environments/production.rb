@@ -52,5 +52,26 @@ Rollcall::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
   
-  config.ejabberd.mod_rest_url = "http://localhost:5285/rest"
+  # XMPP integration (uncomment the appropriate settings for your XMPP server)
+  
+  # Ejabberd Configration
+  #
+  # config.ejabberd.domain = "localhost"
+  #
+  # Uncomment this if your ejabberd server is not on localhost and has mod_rest installed. 
+  #config.ejabberd.mod_rest_url = "http://localhost:5285/rest
+  
+  
+  # Prosody Configuration
+  #
+  # config.prosody.domain = "localhost"
+  # config.prosody.ctl_path = "prosodyctl"
+  
+  
+  # OpenFire Configuration
+  #
+  # config.openfire.domain = "localhost"
+  # config.openfire.userservice_url = "http://localhost:9090/plugins/accountService/userservice"
+  # config.openfire.userservice_secret = "topsecret"
+  # config.openfire.group = "rollcall"
 end

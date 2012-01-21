@@ -11,7 +11,16 @@ gem 'builder'
 
 gem 'restful_jsonp', '~> 1.0.2'
 
-gem 'rollcall-ejabberd', :path => '../rollcall-ejabberd' #:git => 'git://github.com/educoder/rollcall-ejabberd.git'
+# Load Ejabberd integration code
+#gem 'rollcall-ejabberd', :git => 'git://github.com/educoder/rollcall-ejabberd.git'
+
+# Load Prosody integration code
+#gem 'rollcall-prosody', :git => 'git://github.com/educoder/rollcall-prosody.git'
+
+# Load OpenFire integration code
+# gem 'rollcall-openfire', :git => 'git://github.com/educoder/rollcall-openfire.git'
+
+gem 'rollcall-prosody', :path => '../rollcall-prosody' #:git => 'git://github.com/educoder/rollcall-prosody.git'
 
 # Use unicorn as the web server
 # gem 'unicorn'

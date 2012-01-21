@@ -24,6 +24,6 @@ Rollcall::Application.configure do
   config.action_dispatch.best_standards_support = :builtin
 
   #config.ejabberd.domain = "glint"
-  config.ejabberd.domain = "proto.encorelab.org"
+  config.prosody.domain = "glint"
 end
 
