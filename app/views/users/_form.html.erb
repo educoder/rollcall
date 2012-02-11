@@ -1,6 +1,6 @@
 <%= form_for(@user) do |f| %>
   
-  <% if @user.errors.any? %>
+  <% unless @user.errors.empty? %>
     <div id="error_explanation">
       <%= f.error_messages(:message => "",
         :header_message => "The #{@user.class.name} couldn't be saved to the database because:") %>

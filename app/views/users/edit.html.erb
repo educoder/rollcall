@@ -1,5 +1,7 @@
 <h1>Editing user</h1>
 
+<%= show_flash %>
+
 <%= button_to("Delete User", user_path(@user), :method => :delete, :style => 'margin-bottom: 1em', :class => 'delete', :confirm => "Delete user #{@user}?") %>
 <%= render 'form' %>
 

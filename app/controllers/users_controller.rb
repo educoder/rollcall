@@ -74,8 +74,14 @@ class UsersController < ApplicationController
     params[:user].delete(:groups) if params[:user]
     
     @user = User.find(params[:id])
-    flash[:notice] = 'User was successfully updated' if @user.update_attributes(params[:user])
-    respond_with(@user,  :include => {:account => {:except => :password, :methods => :encrypted_password}})
+    respond_with(@user,  :include => {:account => {:except => :password, :methods => :encrypted_password}}) do |format|
+      format.html do
+        flash.now[:notice] = 'User was successfully updated' if @user.update_attributes(params[:user])
+        render :action => :edit
+      end
+      format.xml { render :xml => @user }
+      format.json { render :json => @user }
+    end
   end
 
   # DELETE /users/1
