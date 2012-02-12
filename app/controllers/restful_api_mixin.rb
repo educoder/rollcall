@@ -18,7 +18,7 @@ module RestfulApiMixin
   
   def self.included(controller)
     controller.rescue_from ActiveRecord::RecordNotFound, :with => :render_error
-    controller.before_filter :api_auth
+    #controller.before_filter :api_auth
   end
   
   class RestfulError
