@@ -10,6 +10,7 @@ gem 'mysql2', '< 0.3'
 gem 'builder'
 
 gem 'restful_jsonp', '~> 1.0.2'
+gem 'rack-cors', :require => 'rack/cors'
 
 # Load Ejabberd integration code
 #gem 'rollcall-ejabberd', :git => 'git://github.com/educoder/rollcall-ejabberd.git'
