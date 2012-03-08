@@ -1,5 +1,6 @@
 development:
-  adapter: mysql2
+  adapter: jdbcmysql
+  encoding: utf8
   database: rollcall
   username: root
   password: 
@@ -9,14 +10,16 @@ development:
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
-  adapter: mysql2
+  adapter: jdbcmysql
+  encoding: utf8
   database: rollcall_test
   username: root
   password: 
   socket: /tmp/mysql.sock
 
 production:
-  adapter: mysql2
+  adapter: jdbcmysql
+  encoding: utf8
   database: rollcall
   username: rollcall
   password: 
