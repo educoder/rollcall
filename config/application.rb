@@ -60,6 +60,7 @@ module Rollcall
         resource '/users*', :headers => :any, :methods => :any
         resource '/groups*', :headers => :any, :methods => :get
         resource '/runs*', :headers => :any, :methods => :get
+        resource '/curnits*', :headers => :any, :methods => :get
       end
     end
     
