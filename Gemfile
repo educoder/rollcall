@@ -6,15 +6,11 @@ gem 'rails', '3.0.7'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 #gem 'sqlite3-ruby', :require => 'sqlite3'
-#gem 'mysql2', '< 0.3'
-gem 'jdbc-mysql'
-gem 'activerecord-jdbcmysql-adapter'
-gem 'activerecord-jdbc-adapter'
+gem 'mysql2', '< 0.3'
 gem 'builder'
 
 gem 'restful_jsonp', '~> 1.0.2'
 gem 'rack-cors', :require => 'rack/cors'
-gem 'rest-client'
 
 # Load Ejabberd integration code
 #gem 'rollcall-ejabberd', :git => 'git://github.com/educoder/rollcall-ejabberd.git'
@@ -25,7 +21,7 @@ gem 'rest-client'
 # Load OpenFire integration code
 # gem 'rollcall-openfire', :git => 'git://github.com/educoder/rollcall-openfire.git'
 
-gem 'rollcall-prosody'
+gem 'rollcall-prosody', :path => '../rollcall-prosody' #:git => 'git://github.com/educoder/rollcall-prosody.git'
 
 # Use unicorn as the web server
 # gem 'unicorn'
@@ -33,14 +29,14 @@ gem 'rollcall-prosody'
 # Deploy with Capistrano
 # gem 'capistrano'
 
-# group :test, :development do
-#   #gem 'rspec-rails', '~> 2.0.0.beta.20'
-#   gem 'rspec-rails', ">= 2.0.0.beta.22"
-#   gem 'rest-client'
-#   gem 'nokogiri'
-#   gem 'json'
-#   gem 'ruby-debug'
-# end
+group :test, :development do
+  #gem 'rspec-rails', '~> 2.0.0.beta.20'
+  gem 'rspec-rails', ">= 2.0.0.beta.22"
+  gem 'rest-client'
+  gem 'nokogiri'
+  gem 'json'
+  gem 'ruby-debug'
+end
 
 # Bundle the extra gems:
 # gem 'bj'
