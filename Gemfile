@@ -35,7 +35,10 @@ group :test, :development do
   gem 'rest-client'
   gem 'nokogiri'
   gem 'json'
-  gem 'ruby-debug'
+  #for ruby 1.8.x
+  #gem 'ruby-debug'
+  #for ruby 1.9.x
+  gem 'ruby-debug19'
 end
 
 # Bundle the extra gems:
