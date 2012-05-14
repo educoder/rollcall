@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module ApplicationHelper
   def link_to_edit(record)
     content_tag(:span, :class => 'edit action') do
