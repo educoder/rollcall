@@ -16,7 +16,8 @@ module AccountMixin
         :reject_if => proc{|attributes| attributes['login'].blank? && attributes['password'].blank?},
         :allow_destroy => true, :update_only => true
         
-      validates_associated :account
+      validates_associated :account,
+        :message => "associated with this #{self.class} failed validation"
       
       after_validation do
         # fix weird error messages caused by :autosave => true combined with errors.full_messages
