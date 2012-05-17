@@ -52,26 +52,17 @@ Rollcall::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
   
-  # XMPP integration (uncomment the appropriate settings for your XMPP server)
   
-  # Ejabberd Configration
+  # XMPP integration
   #
-  # config.ejabberd.domain = "localhost"
+  # Uncomment and configure these values for your XMPP server.
   #
-  # Uncomment this if your ejabberd server is not on localhost and has mod_rest installed. 
-  #config.ejabberd.mod_rest_url = "http://localhost:5285/rest
-  
-  
-  # Prosody Configuration
+  # The admin_jid account must have admin privileges (must be able to execute adhoc admin commands).
   #
-  # config.prosody.domain = "localhost"
-  # config.prosody.ctl_path = "prosodyctl"
-  
-  
-  # OpenFire Configuration
+  # You will also need to uncomment "gem 'rollcall-xmpp'"" in config/environments/production.rb
+  # and may need to enable the appropriate adhoc admin module in your XMPP server.
   #
-  # config.openfire.domain = "localhost"
-  # config.openfire.userservice_url = "http://localhost:9090/plugins/accountService/userservice"
-  # config.openfire.userservice_secret = "topsecret"
-  # config.openfire.group = "rollcall"
+  #config.xmpp.domain = "your.xmpp.domain"
+  #config.xmpp.admin_jid = "rollcall"
+  #config.xmpp.admin_password = "topsecret"
 end
