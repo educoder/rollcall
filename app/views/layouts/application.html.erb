@@ -23,11 +23,11 @@
 <% @menu = ['users', 'groups', 'runs', 'curnits'] %>
 <% if !(params[:controller] == 'sessions' && params[:action] == 'new') %>
     <ul id="menu">
-        <%=raw(@menu.collect { |m| 
-            content_tag("li", :class => params[:controller] == m ? "active" : "") {
+        <% @menu.each do |m| %>
+            <%= content_tag("li", :class => params[:controller] == m ? "active" : "") do
                 link_to(m.capitalize, url_for(:controller => m))
-            } 
-        }) %>
+            end %>
+        <% end %>
     </ul>
 <% end %>
 
