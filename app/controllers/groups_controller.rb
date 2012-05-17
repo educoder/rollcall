@@ -147,7 +147,7 @@ class GroupsController < ApplicationController
     #@member = (params[:member][:type].constantize).find(params[:member][:id])
     
     case @distribution
-    when :uniform:
+    when :uniform then
       smallest_group_size = nil
       smallest_group = nil
       @groups.to_a.sort_by{rand}.each do |g|
