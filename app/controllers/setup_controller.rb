@@ -8,8 +8,15 @@ class SetupController < ApplicationController
   
   def index
     if request.post?
-      @admin = User.create(:display_name => params[:admin][:login],  :kind => "Admin", 
-        :account => UserAccount.create(:login => params[:admin][:login], :password => params[:admin][:password]))
+      # skip validations here to prevent plugins like rollcall-xmpp from crapping out
+      account = UserAccount.create(
+        :login => params[:admin][:login], 
+        :password => params[:admin][:password],
+        :validate => false)
+      @admin = User.create(
+        :display_name => params[:admin][:login],  
+        :kind => "Admin", 
+        :account => account)
       
       if @admin.valid?
         render :action => :complete
