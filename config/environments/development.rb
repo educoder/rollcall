@@ -24,7 +24,7 @@ Rollcall::Application.configure do
   config.action_dispatch.best_standards_support = :builtin
 
   #config.xmpp.domain = "your.xmpp.domain"
-  #config.xmpp.admin_jid = "rollcall"
+  #config.xmpp.admin_jid = "rollcall@your.xmpp.domain"
   #config.xmpp.admin_password = "topsecret"
 end
 

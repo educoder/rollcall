@@ -63,6 +63,6 @@ Rollcall::Application.configure do
   # and may need to enable the appropriate adhoc admin module in your XMPP server.
   #
   #config.xmpp.domain = "your.xmpp.domain"
-  #config.xmpp.admin_jid = "rollcall"
+  #config.xmpp.admin_jid = "rollcall@your.xmpp.domain"
   #config.xmpp.admin_password = "topsecret"
 end
