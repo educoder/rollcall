@@ -11,12 +11,17 @@
 <% end %>
 </div>
 
-<h2 style="right: 24px; left: 50%; position: absolute; margin: 0; margin-left: 12px; background-color: #670; padding: 8px">Groupable Items</h2>
-<div class="sidebox" style="right: 24px; left: 50%; position: absolute; margin-left: 12px; margin-top: 37px">
-	<ul class="groupables">
-		<% (Group.all + User.all).each do |groupable| %>
-			<%= render(:partial => 'groupable', :locals => {:groupable => groupable}) %>
-		<% end %>
-	</ul>
+<div class="sidebox" style="right: 24px; left: 50%; position: fixed; margin-left: 12px; top: 107px; bottom: 20px; border-top: none">
+    <h2 style="margin-top: -4px; margin-left: -4px; margin-right: -4px; margin-bottom: 0; padding: 8px; background-color: #670">
+        Groupable Items
+    </h2>
+
+    <div class="scrolling-container" style="position: absolute; bottom: 2px; top: 37px;">
+    	<ul class="groupables">
+    		<% (Group.all + User.all).each do |groupable| %>
+    			<%= render(:partial => 'groupable', :locals => {:groupable => groupable}) %>
+    		<% end %>
+    	</ul>
+    </div>
 </div>
 

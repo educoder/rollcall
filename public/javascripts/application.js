@@ -41,6 +41,18 @@
                 }
             }
         });
+
+        var groupHoverOver = function () {
+            $(this).find('.groupables .groupable').each(function () {
+                $('.'+$(this).data('dom-class')).addClass("highlight");
+            });
+        };
+
+        var groupHoverOut = function () {
+            $(".highlight").removeClass("highlight");
+        };
+
+        $(this).hover(groupHoverOver, groupHoverOut);
     };
 }(jQuery));
 

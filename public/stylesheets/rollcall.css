@@ -128,6 +128,14 @@ label {
   font-weight: bold;
 }
 
+div.scrolling-container {
+  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  width: 100%;
+}
+
 div.list-actions {
   float: right;
   padding-top: 24px;
@@ -183,6 +191,10 @@ ul.groupables li span.class {
   color: #bc7;
   padding-left: 4px;
   padding-right: 4px;
+}
+
+ul.groupables li.highlight {
+  background-color: #bc7;
 }
 
 .edit_group ul.groupables li {
