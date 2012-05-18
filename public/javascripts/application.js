@@ -1,14 +1,17 @@
+/*jshint devel: true, browser: true */
+/*globals jQuery, $ */
+
 (function ($) {
     $.fn.groupable = function() {
-        $(this).draggable({revert: true, revertDuration: 0})
-    },
+        $(this).draggable({revert: true, revertDuration: 0});
+    };
     $.fn.group = function() {
         $(this).droppable({
             tolerance: 'pointer',
             hoverClass: 'active',
             drop: function(ev, ui) {
                 if ($(ui.draggable).is('.groupable')) {
-                    groupable = (ui.draggable)
+                    var groupable = (ui.draggable);
                     $.ajax({
                         url: '/groups/'+$(this).data('id')+'/add_member',
                         type: 'put',
@@ -20,55 +23,55 @@
                             }
                         },
                         beforeSend: function(data) {
-                            $(this).effect('highlight')
+                            $(this).effect('highlight');
                         },
                         success: function(data) {
-                            updatedGroup = $(data)
-                            updatedGroup.group() // make the replacement element a droppable
-                            $(this).replaceWith(updatedGroup)
+                            var updatedGroup = $(data);
+                            updatedGroup.group(); // make the replacement element a droppable
+                            $(this).replaceWith(updatedGroup);
                         },
                         error: function(data) {
                             alert("ERROR: \n  - "+
                                 $(data.responseXML).find('error').map(function(){
-                                    return $(this).text()
+                                    return $(this).text();
                                 }).toArray().join("\n  - ")
-                            )
+                            );
                         }
-                    })
+                    });
                 }
             }
-        })
-    }
-}(jQuery))
+        });
+    };
+}(jQuery));
 
 $(document).ready(function() {
-    $('input[type=submit], input[type=button], input[type=reset]').button()
-    $('button[type=submit]').button({icons: {primary: 'ui-icon-check'}})
+    $('input[type=submit], input[type=button], input[type=reset]').button();
+    $('button[type=submit]').button({icons: {primary: 'ui-icon-check'}});
     
     
-    $('.groupable').groupable()
-    $('.group').group()
+    $('.groupable').groupable();
+    $('.group').group();
     
     
     $('.edit_group .groupables li .delete')
         .bind('ajax:beforeSend', function() {
-            $(this).parent().addClass('deleted')
+            $(this).parent().addClass('deleted');
         })
         .bind('ajax:success', function() {
-            $(this).parent().hide('fade', {}, 'fast')
-        })
+            $(this).parent().hide('fade', {}, 'fast');
+        });
         
-    checkHasAccount = function() {
+    var checkHasAccount = function() {
         if ($('#has_account').is(':checked')) {
-            $('#account').show()
-            $('#group_account_attributes__destroy').val(false)
+            $('#account').show();
+            $('#group_account_attributes__destroy').val(false);
         } else {
-            $('#account').hide()
-            $('#group_account_attributes__destroy').val(true)
+            $('#account').hide();
+            $('#group_account_attributes__destroy').val(true);
         }
-    }
+    };
 
-    $('#has_account').click(checkHasAccount)
-    checkHasAccount()
+    $('#has_account').click(checkHasAccount);
+    checkHasAccount();
         
-})
+});
