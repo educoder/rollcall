@@ -1,7 +1,7 @@
 development:
   adapter: mysql2
   database: rollcall
-  username: rollcall
+  username: root
   password: 
   socket: /tmp/mysql.sock
 
