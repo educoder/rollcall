@@ -10,6 +10,19 @@
   <fieldset>
     <legend>Admin Credentials</legend>
     <p class="notice">Set up credentials for the admin account. You'll be able to create additional admin accounts later.</p>
+
+    <% if Object.const_defined?("RollcallXMPP") %>
+      <div class="warning">
+        <p>
+          Make sure that the RollcallXMPP admin user has been created and granted admin access on your XMPP server before proceeding. Your current RollcallXMPP configuration is:
+        </p>
+        <p><code><%= RollcallXMPP::Railtie.config.xmpp.inspect %></code></p>
+        <p>
+          <em>Important:</em> The Rollcall admin user you create here must have a different username than your XMPP admin user!
+        </p>
+      </div>
+    <% end %>
+
     <%= fields_for :admin do |af| %>
       <% if @admin.errors.any? %>
         <%= af.error_messages(:message => "",

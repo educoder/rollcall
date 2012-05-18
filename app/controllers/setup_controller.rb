@@ -12,15 +12,13 @@ class SetupController < ApplicationController
         :login => params[:admin][:login], 
         :password => params[:admin][:password]
       )
-      # skip validations here to prevent plugins like rollcall-xmpp from crapping out
-      account.save(:validate => false)
-      # TODO: check that account was actually saved (has an id)
-      @admin = User.create(
+      
+      @admin = User.new(
         :display_name => params[:admin][:login],  
         :kind => "Admin", 
         :account => account)
       
-      if @admin.valid?
+      if @admin.save
         render :action => :complete
         return
       end

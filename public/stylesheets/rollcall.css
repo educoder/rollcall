@@ -26,6 +26,10 @@ p {
   margin-top: 0;
 }
 
+pre {
+  background-color: rgba(255, 255, 255, 0.75);
+}
+
 p.hint {
   opacity: 0.5;
 }
@@ -233,6 +237,16 @@ strong.highlight {
   font-weight: bold;
   padding: 4px;
   border: 3px solid #780;
+  margin-bottom: 1em;
+}
+
+#warning, .warning {
+  background-color: #ffe800;
+  border: 3px dashed #dd6600;
+  color: #4b2e00;
+  font-weight: bold;
+  padding: 8px;
+  margin-bottom: 1em;
 }
 
 table > thead > tr > th {
