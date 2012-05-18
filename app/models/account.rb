@@ -10,7 +10,8 @@ class Account < ActiveRecord::Base
     :if => proc{ allow_passwordless_login? && password.blank? && !login.blank? }
     # if account allows for passwordless login and the password is blank (but don't do it if we have no login for some reason)
     
-  validates_uniqueness_of :login
+  validates_uniqueness_of :login,
+    :message => "'%{value}' has already been taken"
   
   validate :cannot_change_login, :on => :update
   
