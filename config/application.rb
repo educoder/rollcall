@@ -57,11 +57,11 @@ module Rollcall
       allow do
         origins '*' # might be risky... maybe constrain to *.encorelab.org? 
                     # but what about non-encore installations?
-        resource '/users*', :headers => :any, :methods => :any
-        resource '/groups*', :headers => :any, :methods => :get
-        resource '/runs*', :headers => :any, :methods => :get
-        resource '/curnits*', :headers => :any, :methods => :get
-        resource '/sessions*', :headers => :any, :methods => :get
+        resource '/users*', :headers => :any, :methods => [:get, :put, :patch, :post, :delete]
+        resource '/groups*', :headers => :any, :methods => [:get, :put, :patch, :post, :delete]
+        resource '/runs*', :headers => :any, :methods => [:get, :put, :patch, :post, :delete]
+        resource '/curnits*', :headers => :any, :methods => [:get, :put, :patch, :post, :delete]
+        resource '/sessions*', :headers => :any, :methods => [:get, :put, :patch, :post, :delete]
       end
     end
     
