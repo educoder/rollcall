@@ -66,6 +66,8 @@ class SessionsController < ApplicationController
     
     @for = Account.find(:all, :conditions => ['login IN (?)', logins], :include => :for).collect{|a| a.for}
     groups = Group.find(:all, :include => :memberships, :conditions => ['group_memberships.member_id IN (?)', @for.collect{|f| f.id}])
+    # FIXME: !!!!! this code looks for a group that all users in `logins` have in common, and assumes this is their core group...
+    #        but if you select all users in a run, the special run group will be returned and you'll end up with a weird silent error
     @group = groups.find{|g| g.members.collect{|m| m.login}.sort == logins.sort}
       # TODO: figure out what to do if for some reason we return multiple matching groups
     
